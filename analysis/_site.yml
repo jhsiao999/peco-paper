@@ -1,7 +1,7 @@
-name: "peco-paper"
+name: peco-paper
 output_dir: ../docs
 navbar:
-  title: "peco-paper"
+  title: peco-paper
   left:
   - text: Home
     href: index.html
@@ -9,6 +9,10 @@ navbar:
     href: about.html
   - text: License
     href: license.html
+  right:
+  - icon: fa-github
+    text: Source code
+    href: https://github.com/jhsiao999/peco-paper
 output:
   workflowr::wflow_html:
     toc: yes
