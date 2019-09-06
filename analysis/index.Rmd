@@ -1,11 +1,64 @@
 ---
-title: "Home"
+title: "peco"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
-    toc: false
+    toc: TRUE
+    toc_float: FALSE
 editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+$~$
+
+### Introduction
+
+Cell cycle phase and cell types - among many reasons - are argubly the most candidates driving differences in gene expression among cells. 
+
+__peco__ is a supervised approach for predicting _continuous_ cell cycle phase in single-cell RNA-seq (scRNA-seq) data analysis. 
+
+We developed __peco__ in a study that combined fluorescence imaging with scRNA-seq to measure cell cycle phase and gene expression levels in human induced pluripotent stem cells (iPSCs). 
+
+
+* Our paper: [Characterizing and inferring quantitative cell-cycle phase in single-cell RNA-seq data analysis](doi.org/10.1101/526848).
+
+* Our software: 
+
+
+### Download peco
+
+* [GitHub repo](https://github.com/jdblischak/fucci-seq) for code and data
+* [peco package](https://github.com/jhsiao999/peco) for our supervised approach predicting cell cycle phase in induced pluripotent stem cells.
+
+
+### Access data
+
+* GEO record [GSE121265](http://www.ncbi.nlm.nih.gov/ geo/query/acc.cgi?acc=GSE121265) for the raw FASTQ files
+
+
+### Reproduce analysis
+
+Find out how we 
+
+* [processed scRNA-seq and imaging data](access_data.html)
+
+* [infer an angel for each cell based on FUCCI fluorescence intensities](https://jdblischak.github.io/fucci-seq/images-circle-ordering-eval.html)
+
+* [estimated the cyclic trends of gene expression levels](https://jdblischak.github.io/fucci-seq/npreg-trendfilter-quantile.html)
+
+
+* performed analysis reported in figures
+
+Figure 2. Characterizing cell cycle phase using FUCCI fluorescence intensities.
+
+
+
+
+
+
+
+
+
+
+
+
