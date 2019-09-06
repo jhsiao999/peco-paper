@@ -11,7 +11,7 @@
 
 
 
-<title>Home</title>
+<title>peco</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,6 +22,9 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -191,7 +194,13 @@ $(document).ready(function () {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/jhsiao999/peco-paper">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -208,10 +217,18 @@ div.section {
 
 
 
-<h1 class="title toc-ignore">Home</h1>
+<h1 class="title toc-ignore">peco</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#download-peco">Download peco</a></li>
+<li><a href="#access-data">Access data</a></li>
+<li><a href="#reproduce-analysis">Reproduce analysis</a></li>
+</ul>
+</div>
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
@@ -233,7 +250,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-08-14
+<strong>Last updated:</strong> 2019-09-06
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -264,16 +281,35 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong63517ff"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 63517ff </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertree37ffff6291e62bf0bd8101a3c90358b5c8647d6atargetblank37ffff6a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jhsiao999/peco-paper/tree/37ffff6291e62bf0bd8101a3c90358b5c8647d6a" target="_blank">37ffff6</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong63517ff" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertree37ffff6291e62bf0bd8101a3c90358b5c8647d6atargetblank37ffff6a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
-working directory clean
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  analysis/access_data.Rmd
+    Untracked:  code/fig2.R
+    Untracked:  code/fig3.R
+    Untracked:  code/ourdata_cyclone.R
+    Untracked:  code/ourdata_cyclone.sbatch
+    Untracked:  code/ourdata_oscope.R
+    Untracked:  code/ourdata_oscope.sbatch
+    Untracked:  code/ourdata_peco.R
+    Untracked:  code/ourdata_peco.sbatch
+    Untracked:  code/ourdata_recat.R
+    Untracked:  code/ourdata_recat.sbatch
+    Untracked:  code/ourdata_seurat.R
+    Untracked:  code/ourdata_seurat.sbatch
+    Untracked:  data/peco_ordered_cyclic_genes.txt
+
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
@@ -316,7 +352,41 @@ Message
 Rmd
 </td>
 <td>
-63517ff
+<a href="https://github.com/jhsiao999/peco-paper/blob/37ffff6291e62bf0bd8101a3c90358b5c8647d6a/analysis/index.Rmd" target="_blank">37ffff6</a>
+</td>
+<td>
+jhsiao999
+</td>
+<td>
+2019-09-06
+</td>
+<td>
+update table of content
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jhsiao999/peco-paper/ba2d64757ccd31e8480ccf899bb8e58b1fcfbf35/docs/index.html" target="_blank">ba2d647</a>
+</td>
+<td>
+Joyce Hsiao
+</td>
+<td>
+2019-08-14
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jhsiao999/peco-paper/blob/63517ffa7a0d1414c7e98d316843cc90f6db2e7c/analysis/index.Rmd" target="_blank">63517ff</a>
 </td>
 <td>
 Joyce Hsiao
@@ -335,7 +405,41 @@ Start workflowr project.
 </div>
 </div>
 </div>
-<p>Welcome to my research website.</p>
+<p><span class="math inline">\(~\)</span></p>
+<div id="introduction" class="section level3">
+<h3>Introduction</h3>
+<p>Cell cycle phase and cell types - among many reasons - are argubly the most candidates driving differences in gene expression among cells.</p>
+<p><strong>peco</strong> is a supervised approach for predicting <em>continuous</em> cell cycle phase in single-cell RNA-seq (scRNA-seq) data analysis.</p>
+<p>We developed <strong>peco</strong> in a study that combined fluorescence imaging with scRNA-seq to measure cell cycle phase and gene expression levels in human induced pluripotent stem cells (iPSCs).</p>
+<ul>
+<li><p>Our paper: <a href="doi.org/10.1101/526848">Characterizing and inferring quantitative cell-cycle phase in single-cell RNA-seq data analysis</a>.</p></li>
+<li><p>Our software:</p></li>
+</ul>
+</div>
+<div id="download-peco" class="section level3">
+<h3>Download peco</h3>
+<ul>
+<li><a href="https://github.com/jdblischak/fucci-seq">GitHub repo</a> for code and data</li>
+<li><a href="https://github.com/jhsiao999/peco">peco package</a> for our supervised approach predicting cell cycle phase in induced pluripotent stem cells.</li>
+</ul>
+</div>
+<div id="access-data" class="section level3">
+<h3>Access data</h3>
+<ul>
+<li>GEO record <a href="http://www.ncbi.nlm.nih.gov/%20geo/query/acc.cgi?acc=GSE121265">GSE121265</a> for the raw FASTQ files</li>
+</ul>
+</div>
+<div id="reproduce-analysis" class="section level3">
+<h3>Reproduce analysis</h3>
+<p>Find out how we</p>
+<ul>
+<li><p><a href="access_data.html">processed scRNA-seq and imaging data</a></p></li>
+<li><p><a href="https://jdblischak.github.io/fucci-seq/images-circle-ordering-eval.html">infer an angel for each cell based on FUCCI fluorescence intensities</a></p></li>
+<li><p><a href="https://jdblischak.github.io/fucci-seq/npreg-trendfilter-quantile.html">estimated the cyclic trends of gene expression levels</a></p></li>
+<li><p>performed analysis reported in figures</p></li>
+</ul>
+<p>Figure 2. Characterizing cell cycle phase using FUCCI fluorescence intensities.</p>
+</div>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
