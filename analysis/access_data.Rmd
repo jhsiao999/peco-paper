@@ -1,0 +1,39 @@
+---
+title: "Access data"
+output:
+  workflowr::wflow_html:
+    toc: FALSE
+    toc_float: FALSE
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+```
+
+
+You can find [our finalized datasets](https://jdblischak.github.io/fucci-seq/data-overview.html) on our project website.
+
+Here are some useful links for how we processed our data.
+
+For imaging data:
+
+  * [Processing FUCCI and DAPI images](https://jdblischak.github.io/fucci-seq/images-process.html)
+  * [Correcting for C1 batch effects in FUCCI intensity data](https://jdblischak.github.io/fucci-seq/images-normalize-anova.html)
+
+For scRNA-seq data,
+
+  * First, we performed sample QC, including
+    * computing [sample quality metrics](https://jdblischak.github.io/fucci-seq/sampleqc.html), such as total number of mapped reads, ERCC percentages, etc.
+    * [determining number of cells captured in each C1 well using linear discriminant analysis models](https://jhsiao999.github.io/peco-paper/sampleqc_lda.html))
+    * assessing potential C1 batch effects in [sequencing depth](https://jdblischak.github.io/fucci-seq/totals.html) and [read to molecule conversion rate](https://jdblischak.github.io/fucci-seq/reads-v-molecules.html)
+    
+  * Second, [we excluded over-expressed and lowly-expressed genes](https://jdblischak.github.io/fucci-seq/gene-filtering.html). 
+
+  * Finally, we used [Principal Component Analysis](https://jdblischak.github.io/fucci-seq/pca-tf.html) to examined potential sources of gene expression variation.
+
+
+
+
+
+

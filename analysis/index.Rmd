@@ -31,9 +31,13 @@ We developed __peco__ in a study that combined fluorescence imaging with scRNA-s
 * [peco package](https://github.com/jhsiao999/peco) for our supervised approach predicting cell cycle phase in induced pluripotent stem cells.
 
 
-### Access data
+### Access our data
 
-* GEO record [GSE121265](http://www.ncbi.nlm.nih.gov/ geo/query/acc.cgi?acc=GSE121265) for the raw FASTQ files
+* GEO record [GSE121265](http://www.ncbi.nlm.nih.gov/ geo/query/acc.cgi?acc=GSE121265) for all raw and processed sequencing data
+
+* The processed data can also be downloaded from https://giladlab.uchicago.edu/wp-content/uploads/2019/02/Hsiao_et_al_2019.tar.gz.
+
+* All data used in our analysis are available at https://jdblischak.github.io/fucci-seq/data-overview.html.
 
 
 ### Reproduce analysis
@@ -47,9 +51,10 @@ Find out how we
 * [estimated the cyclic trends of gene expression levels](https://jdblischak.github.io/fucci-seq/npreg-trendfilter-quantile.html)
 
 
-* performed analysis reported in figures
+* performed our analysis 
+https://github.com/jhsiao999/peco-paper/code
 
-Figure 2. Characterizing cell cycle phase using FUCCI fluorescence intensities.
+    
 
 
 
