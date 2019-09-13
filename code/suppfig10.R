@@ -1,5 +1,4 @@
-# Supplemental Fig 10
-# subsampling test samples
+# Supplemental Fig S10
 
 # import data
 dir <- "/project2/gilad/joycehsiao/fucci-seq"
@@ -10,8 +9,9 @@ log2cpm_quant <- log2cpm_quant[, match(colnames(eset), colnames(log2cpm_quant))]
 theta <- pData(eset)$theta
 
 
-# --- partition data to training and test datasets
 
+
+# partition data to training and test datasets
 makedata_supervised <- function(eset, log2cpm_quant,
                                 theta) {
 
@@ -67,7 +67,7 @@ makedata_supervised <- function(eset, log2cpm_quant,
 makedata_supervised(eset, log2cpm_quant, theta)
 
 
-# --- make thinned data
+# make thinned data
 makedata_thinned <- function(eset, thinlog2_rate) {
 
   dir <- "/project2/gilad/joycehsiao/fucci-seq"
@@ -209,6 +209,9 @@ subsam %>% group_by(thinlog2) %>% summarize(mn = mean(libsize), sd = sd(libsize)
 # --- results using peco
 eset <- readRDS(file=file.path(dir, "data/eset-final.rds"))
 
+
+
+# Supp Fig S10A
 # not thinned
 grids = "100"
 out_notthin <- do.call(rbind, lapply(unique(pData(eset)$chip_id), function(ind) {
@@ -300,7 +303,7 @@ out_notthin_500 %>% group_by(ind, ngenes) %>%
                      labels=c(2, 50, seq(100, 500, by=50)))
 
 
-
+# Supp Fig S11C
 grids = "100"
 thinlog2 = "033"
 out_thinlog2_033 <- do.call(rbind, lapply(unique(pData(eset)$chip_id), function(ind) {
@@ -349,6 +352,7 @@ out_thinlog2_033 %>% group_by(ind, ngenes) %>%
 
 
 
+# Supp Fig S11D
 grids = "100"
 thinlog2 = "080"
 out_thinlog2_080 <- do.call(rbind, lapply(unique(pData(eset)$chip_id), function(ind) {
@@ -396,7 +400,57 @@ out_thinlog2_080 %>% group_by(ind, ngenes) %>%
                             rep("",4), 30, rep("",4), 35,
                             rep("",4), 40, rep("",4), 45, rep("",4), 50))
 
+
 mean(out_thinlog2_080$diff_time/2/pi)
 mean(out_thinlog2_033$diff_time/2/pi)
 
 
+
+
+# Supp Fig S10B
+inds <- c("NA19098","NA18511","NA18870","NA19101","NA18855","NA19160")
+ngene <- 5
+eval_fit <- lapply(1:length(inds), function(i) {
+  ind <- inds[i]
+  fl_name <- file.path(dir,"data/results/finalizing",
+                        paste0("ind_",ind,"_results_overallcyclical.top",ngene,".rds"))
+  df <- readRDS(fl_name)
+  return(df$fit.test)
+})
+names(eval_fit) <- inds
+
+
+# sample size and prediction error
+ns_error <- do.call(rbind, lapply(1:length(eval_fit), function(i) {
+  data.frame(ind=names(eval_fit)[i],
+             error=mean(eval_fit[[i]]$fit.supervised$diff_time),
+             ns=ncol(eval_fit[[i]]$fit.supervised$Y_reordered),
+             stringsAsFactors = F)
+}))
+cols <- RColorBrewer::brewer.pal(9,"Dark2")
+par(mfrow=c(1,1))
+plot(y=(ns_error$error/2/pi),x=ns_error$ns, pch=16,
+     ylab="Prediction error",
+     xlab="Sample size in test sample", axes=F,
+     xlim=c(80, 220), col=cols[1:6])
+axis(1); axis(2)
+text(labels=ns_error$ind[1],
+     y=(ns_error$error[1]/2/pi),
+     x=ns_error$ns[1], pos=4, offset=1, col=cols[1])
+text(labels=ns_error$ind[2],
+     y=(ns_error$error[2]/2/pi),
+     x=ns_error$ns[2], pos=3, offset=1, col=cols[2])
+text(labels=ns_error$ind[3],
+     y=(ns_error$error[3]/2/pi),
+     x=ns_error$ns[3], pos=3, offset=1, col=cols[3])
+text(labels=ns_error$ind[4],
+     y=(ns_error$error[4]/2/pi),
+     x=ns_error$ns[4], pos=1, offset=1, col=cols[4])
+text(labels=ns_error$ind[5],
+     y=(ns_error$error[5]/2/pi),
+     x=ns_error$ns[5], pos=3, offset=1, col=cols[5])
+text(labels=ns_error$ind[6],
+     y=(ns_error$error[6]/2/pi),
+     x=ns_error$ns[6], pos=1, offset=1, col=cols[6])
+cor.test(ns_error$error, ns_error$ns, method = "spearman")
+title("Supp Fig S10B")
