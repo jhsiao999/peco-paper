@@ -12,5 +12,5 @@ We combined fluorescence imaging with scRNA-seq to measure cell cycle phase and 
 
 Find out more about our study in our paper.
 
-* bioRxiv: [Characterizing and inferring quantitative cell-cycle phase in single-cell RNA-seq data analysis](doi.org/10.1101/526848)
+* bioRxiv: [Characterizing and inferring quantitative cell-cycle phase in single-cell RNA-seq data analysis](https://www.biorxiv.org/content/10.1101/526848v2)
 
