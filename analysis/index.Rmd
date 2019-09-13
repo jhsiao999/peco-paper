@@ -25,22 +25,30 @@ We developed __peco__ in a study that combined fluorescence imaging with scRNA-s
 * Our software: 
 
 
-### Download peco
+### Software
 
-* [GitHub repo](https://github.com/jdblischak/fucci-seq) for code and data
-* [peco package](https://github.com/jhsiao999/peco) for our supervised approach predicting cell cycle phase in induced pluripotent stem cells.
+* [peco 0.99.0](https://github.com/jhsiao999/peco) is submitted and pending review on Bioconductor.
 
+The development version can be downloaded from GitHub
 
-### Access our data
-
-* GEO record [GSE121265](http://www.ncbi.nlm.nih.gov/ geo/query/acc.cgi?acc=GSE121265) for all raw and processed sequencing data
-
-* The processed data can also be downloaded from https://giladlab.uchicago.edu/wp-content/uploads/2019/02/Hsiao_et_al_2019.tar.gz.
-
-* All data used in our analysis are available at https://jdblischak.github.io/fucci-seq/data-overview.html.
+```{r, eval=F}
+devtools::install_github("jhsiao999/peco")
+library(peco)
+```
 
 
-### Reproduce analysis
+### Data access
+
+* GEO record [GSE121265](http://www.ncbi.nlm.nih.gov/ geo/query/acc.cgi?acc=GSE121265) 
+for all raw and processed sequencing data
+
+* The processed data data sets are also available in as a gzip compressed 
+tarball on the [Gilad lab website](https://giladlab.uchicago.edu/data/): https://giladlab.uchicago.edu/wp-content/uploads/2019/02/Hsiao_et_al_2019.tar.gz.
+
+* All data sets used in our analysis are listed and downloadable at https://jdblischak.github.io/fucci-seq/data-overview.html.
+
+
+### Code availability
 
 Find out how we 
 
@@ -50,9 +58,8 @@ Find out how we
 
 * [estimated the cyclic trends of gene expression levels](https://jdblischak.github.io/fucci-seq/npreg-trendfilter-quantile.html)
 
-
-* performed our analysis 
-https://github.com/jhsiao999/peco-paper/code
+* analyzed our data and generated figures in our paper 
+https://github.com/jhsiao999/peco-paper/code/
 
     
 
