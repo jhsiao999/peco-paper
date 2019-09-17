@@ -40,8 +40,8 @@ Find out how we
 
 * [estimated the cyclic trends of gene expression levels](https://jdblischak.github.io/fucci-seq/npreg-trendfilter-quantile.html)
 
-* analyzed our data and generated figures in our paper 
-https://github.com/jhsiao999/peco-paper/code/
+* [analyzed our data and generated figures in our paper](https://github.com/jhsiao999/peco-paper/tree/master/code)
+
 
 
 ## Contact
