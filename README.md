@@ -2,14 +2,14 @@
 
 __peco__ is a supervised approach for predicting _continuous_ cell cycle phase in single-cell RNA-seq (scRNA-seq) data analysis. 
 
-We developed __peco__ in a study that combined fluorescence imaging with scRNA-seq to measure cell cycle phase and gene expression levels in human induced pluripotent stem cells (iPSCs). 
+We trained __peco__ using cyclic gene expression signatures learned from Fluorescence Ubiquitin Cell Cycle Indicator (FUCCI) reporters. The data was collected from  fluorescence imaging with scRNA-seq to measure cell cycle phase and gene expression levels in human induced pluripotent stem cells (iPSCs). 
 
 * Our paper: [Characterizing and inferring quantitative cell-cycle phase in single-cell RNA-seq data analysis](doi.org/10.1101/526848).
 
 
 ## Software
 
-* [peco 0.99.0](https://github.com/jhsiao999/peco) is submitted and pending review on Bioconductor.
+* [peco 0.99.4](https://github.com/jhsiao999/peco) is submitted and pending review on Bioconductor.
 
 The development version can be downloaded from GitHub
 

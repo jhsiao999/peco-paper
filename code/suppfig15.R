@@ -23,7 +23,8 @@ pred_peco <- lapply(1:length(inds), function(i) {
                                   ind, "_top",sprintf("%03d", 5), "genes_grids_", 100, ".rds")))
   fits <- lapply(1:5, function(g) {
     gexp <- with(out$fit_test, Y[g,order(cell_times_est)])
-    phase <- shift_origin(with(out$fit_test, cell_times_est[order(cell_times_est)]), origin = 3*pi/4)
+    phase <- shift_origin(with(out$fit_test, cell_times_est[order(cell_times_est)]),
+                          origin = 3*pi/4)
     fit_g <- with(out$fit_test, fit_trendfilter_generic(gexp))
     fun_g <- approxfun(x=as.numeric(phase),
                        y=as.numeric(fit_g$trend.yy), rule=2)

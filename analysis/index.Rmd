@@ -9,27 +9,22 @@ editor_options:
   chunk_output_type: console
 ---
 
-$~$
+## Overview
 
-### Introduction
-
-Cell cycle phase and cell types - among many reasons - are argubly the most candidates driving differences in gene expression among cells. 
-
-__peco__ is a supervised approach for predicting _continuous_ cell cycle phase in single-cell RNA-seq (scRNA-seq) data analysis. 
-
-We developed __peco__ in a study that combined fluorescence imaging with scRNA-seq to measure cell cycle phase and gene expression levels in human induced pluripotent stem cells (iPSCs). 
+__peco__ is a supervised approach for predicting _continuous_ cell cycle phase using single-cell RNA-seq (scRNA-seq) data. 
 
 
-* Our paper: [Characterizing and inferring quantitative cell-cycle phase in single-cell RNA-seq data analysis](doi.org/10.1101/526848).
+## The approach
 
-* Our software: 
+We quantified continous cell cycle phase using FUCCI fluorescence imaging and trained peco to predict this continuous cell cycle phase using scRNA-seq data collected from six human cell lines. 
+[Our paper](doi.org/10.1101/526848) showed that peco produces robust cell cycle phase predictions using strong cyclic genes - genes which expression levels oscillate along the cell cycle. 
 
 
-### Software
+## The software
 
-* [peco 0.99.0](https://github.com/jhsiao999/peco) is submitted and pending review on Bioconductor.
+__peco__ will be released in Biconductor 3.11.
 
-The development version can be downloaded from GitHub
+The development version is available on [GitHub](https://github.com/jhsiao999/peco). To install the development version,
 
 ```{r, eval=F}
 devtools::install_github("jhsiao999/peco")
@@ -37,20 +32,25 @@ library(peco)
 ```
 
 
-### Data access
+## Citation
+
+[Characterizing and inferring quantitative cell-cycle phase in single-cell RNA-seq data analysis](doi.org/10.1101/526848).
+
+
+## Data access 
+
+We store the data as `singleCellExperiment` objects (require `singleCellExperiment` package).
 
 * GEO record [GSE121265](http://www.ncbi.nlm.nih.gov/ geo/query/acc.cgi?acc=GSE121265) 
-for all raw and processed sequencing data
+for all raw and processed sequencing data.
 
-* The processed data data sets are also available in as a gzip compressed 
-tarball on the [Gilad lab website](https://giladlab.uchicago.edu/data/): https://giladlab.uchicago.edu/wp-content/uploads/2019/02/Hsiao_et_al_2019.tar.gz.
-
-* All data sets used in our analysis are listed and downloadable at https://jdblischak.github.io/fucci-seq/data-overview.html.
+* We also provide the processed data in TXT format as a gzip compressed 
+tarball on the [Gilad lab website](https://giladlab.uchicago.edu/wp-content/uploads/2019/02/Hsiao_et_al_2019.tar.gz).
 
 
-### Code availability
+## Code availability
 
-Find out how we 
+Find out how we
 
 * [processed scRNA-seq and imaging data](access_data.html)
 
@@ -60,7 +60,8 @@ Find out how we
 
 * [analyzed our data and generated figures in our paper](https://github.com/jhsiao999/peco-paper/tree/master/code)
 
-    
+
+
 
 
 
