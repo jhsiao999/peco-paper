@@ -1,17 +1,17 @@
 # Figure 2
 
-library(Biobase)
+library(SingleCellExperiment)
 library(circular)
 library(peco)
 library(cluster)
 library(ggplot2)
 
 dir <- "/project2/gilad/joycehsiao/fucci-seq"
-eset <- readRDS(file.path(dir, "data/eset-final.rds"))
+sce <- readRDS(file.path(dir, "data/sce-final.rds"))
 
 # Fig 2A. Derive FUCCI-based cell cycle phase
-pca <- prcomp(cbind(pData(eset)$rfp.median.log10sum.adjust,
-                    pData(eset)$gfp.median.log10sum.adjust))
+pca <- prcomp(cbind(colData(sce)$rfp.median.log10sum.adjust,
+                    colData(sce)$gfp.median.log10sum.adjust))
 (pca$sdev^2)/sum(pca$sdev^2)
 
 plot(pca$x[,1], pca$x[,2], pch=16, cex=.5, xlim=c(-4, 4), ylim=c(-4,4),
@@ -28,10 +28,10 @@ theta_final <- shift_origin(as.numeric(theta), 3*pi/4)
 
 # get PAM-based clusters
 theta_final <- shift_origin(as.numeric(theta), 3*pi/4)
-pam_res <- pam(cbind(pData(eset)$rfp.median.log10sum.adjust,
-                     pData(eset)$gfp.median.log10sum.adjust), k=3)
+pam_res <- pam(cbind(colData(sce)$rfp.median.log10sum.adjust,
+                     colData(sce)$gfp.median.log10sum.adjust), k=3)
 clust <- data.frame(clust=pam_res$clustering,
-                    sample_id=rownames(pData(eset)))
+                    sample_id=rownames(colData(sce)))
 plot(theta_final, clust$clust)
 b1 <- mean(max(range(theta_final[clust$clust==2])), min(range(theta_final[clust$clust==3])))
 b2 <- mean(max(range(theta_final[clust$clust==3])), max(range(theta_final[clust$clust==1])))
@@ -43,7 +43,7 @@ abline(v=c(b1,b2,b3), lty=2)
 
 par(mfrow=c(1,1))
 plot(x=shift_origin(as.numeric(theta), 3*pi/4),
-     y=pData(eset)$gfp.median.log10sum.adjust, col="forestgreen",
+     y=colData(sce)$gfp.median.log10sum.adjust, col="forestgreen",
      pch=c(16,1,4)[clust$clust],
      ylim=c(-1.5, 1.5), cex=.5,
      xlab="FUCCI phase", ylab="FUCCI scores",
@@ -53,7 +53,7 @@ axis(2); axis(1,at=c(0,pi/2, pi, 3*pi/2, 2*pi),
                        expression(2*pi)))
 abline(h=0, lty=1, col="black", lwd=.7)
 points(x=shift_origin(as.numeric(theta), 3*pi/4),
-       y=pData(eset)$rfp.median.log10sum.adjust, col="firebrick",
+       y=colData(sce)$rfp.median.log10sum.adjust, col="firebrick",
        ylim=c(-1.5, 1.5),
        pch=c(16,1,4)[clust$clust],
        cex=.5)
@@ -62,14 +62,14 @@ abline(v=c(b1,b2,b3), lty=2)
 
 # Fig 2C. FUCCI phase summarizes fluorescent intensities
 # get top 5 cyclic genes
-fits_all <- readRDS(file.path(dir, "output/npreg-trendfilter-quantile.Rmd/fit.quant.rds"))
+fits_all <- readRDS("data/fit.quant.rds")
 pve_all <- sapply(fits_all, "[[", 3)
 pve_all_ord <- pve_all[order(pve_all, decreasing = T)]
 genes <- names(pve_all_ord)[1:5]
 labs <- c("CDK1", "UBE2C", "TOP2A", "HIST1H4E", "HIST1H4C")
 
-data_quant <- readRDS(file.path(dir, "output/npreg-trendfilter-quantile.Rmd/log2cpm.quant.rds"))
-sample_ord <- rownames(pData(df))[order(theta_final)]
+data_quant <- readRDS("data/log2cpm.quant.rds")
+sample_ord <- rownames(colData(df))[order(theta_final)]
 data_quant_ord <- data_quant[,match(sample_ord,colnames(data_quant))]
 fits_tmp <- lapply(1:5, function(i) {
   ii <- which(rownames(data_quant_ord)==genes[i])
@@ -84,7 +84,7 @@ par(mfrow=c(1,5), mar=c(2,2,2,1))
 for (i in 1:5) {
   plot(x=theta_final[order(theta_final)],
        y=data_quant_ord[rownames(data_quant_ord)==genes[i],], col="gray50",
-       xlab="Fucci phase",
+       xlab="FUCCI phase",
        ylab="", axes=F, cex=.3, pch=16,
        main = labs[i])
   lines(x = seq(0, 2*pi, length.out=200),
