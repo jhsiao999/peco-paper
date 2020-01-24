@@ -6,8 +6,9 @@ library("edgeR")
 library("ggplot2")
 library("heatmap3")
 library("reshape2")
-library("Biobase")
-library("testit")
+library("SingleCellExperiment")
+library(heatmap3)
+library(RColorBrewer)
 
 #' @title Perform Principal Components Analysis (PCA).
 #
@@ -94,26 +95,27 @@ get_r2 <- function(x, y) {
   return(stats$adj.r.squared)
 }
 
+
 ## PCA
-dir <- "/project2/gilad/joycehsiao/fucci-seq"
-eset_filter <- readRDS(file.path(dir, "data/eset-filtered.rds"))
+sce_filtered <- readRDS("data/sce-filtered.rds")
+counts = assay(sce_filtered)
+pdata <- data.frame(colData(sce_filtered))
+pdata$experiment <- as.factor(pdata$experiment)
 
 # Compute log2 CPM based on the library size before filtering.
-log2cpm <- cpm(exprs(eset_filter), log = TRUE)
+log2cpm <- edgeR::cpm(counts, log = TRUE)
 
 pca_log2cpm <- run_pca(log2cpm)
 
-pdata <- pData(eset_filter)
-pdata$experiment <- as.factor(pdata$experiment)
 
 # PCA variation -------------------------------------------------------------------
 # selection of technical factor
-library(dplyr)
-covariates <- pData(eset) %>% dplyr::select(experiment, well, chip_id,
+
+covariates <- pdata %>% dplyr::select(experiment, well, chip_id,
                                             concentration, raw:unmapped,
                                             starts_with("detect"),  molecules)
 # look at the first 6 PCs
-pca_log2cpm <- prcomp(t(log2cpm.all), scale. = TRUE, center = TRUE)
+pca_log2cpm <- prcomp(t(log2cpm), scale. = TRUE, center = TRUE)
 pcs <- pca_log2cpm$x[, 1:6]
 
 
@@ -127,7 +129,6 @@ for (cov in colnames(covariates)) {
 }
 
 # plot heatmap
-library(heatmap3)
 heatmap3(r2, cexRow=1, cexCol=1, margins=c(4,15), scale="none",
          ylab="", main = "", symm=F,
          Colv=NA, showColDendro = F,
@@ -159,7 +160,6 @@ summary(f2)$adj.r.squared
 
 # Correlation between Technical factors
 cor_tech <- cor(as.matrix(covariates[,4:11]),use="pairwise.complete.obs")
-library(RColorBrewer)
 heatmap3(cor_tech, symm = TRUE, margins=c(7,15),
          col=brewer.pal (9, "Blues" ), cexRow=1, cexCol=1, scale="none",
          labRow = c("cDNA: cDNA concentration",
