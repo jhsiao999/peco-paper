@@ -28,7 +28,7 @@ $~$
 
 2. Remove lowly expressed genes: Lowly-expressed genes := gene mean < 2 CPM.
 
-*Results*: * Of 20,421 genes, 7,628 genes are classifed as lowly-expressed. Of these, 34 are ERCC control genes and 7,594 are endogenoeus genes. 
+*Results*: * Of 20,421 genes, 7,637 genes are classifed as lowly-expressed. Of these, 34 are ERCC control genes and 7,603 are endogenoeus genes. 
 
 
 ---
@@ -96,13 +96,11 @@ cpm <- t(t(count_filter)/colSums(count_filter))*(10^6)
 Lowly-expressed genes := gene mean < 2 CPM
 
 ```{r}
+cpm <- t(t(count_filter)/anno_filter$molecules)*(10^6)
 which_lowly_expressed <- which(rowMeans(cpm) < 2)
-length(which_lowly_expressed)
 
-which_lowly_expressed_genes <- rownames(cpm)[which_lowly_expressed]
-
-length(grep("ERCC", which_lowly_expressed_genes))
-length(grep("ENSG", which_lowly_expressed_genes))
+length(grep("ERCC", which_lowly_expressed))
+length(grep("ENSG", which_lowly_expressed))
 ```
 
 Get gene info via `biomaRt`.
@@ -113,18 +111,17 @@ lowly_expressed_genes_info <- getBM(
                  "external_gene_name", "transcript_count",
                  "description"),
   filters = "ensembl_gene_id",
-  values = which_lowly_expressed_genes[grep("ENSG", which_lowly_expressed_genes)],
+  values = which_lowly_expressed[grep("ENSG", which_lowly_expressed_genes)],
   mart = ensembl)
 ```
 
 
 ## Combine filters
 
-Including 16,460 genes.
+Including 12784 genes.
 
 ```{r}
-gene_filter <- unique(c(which_lowly_expressed, which_over_expressed))
-
+gene_filter <- unique(c(which_over_expressed, which_lowly_expressed))
 genes_to_include <- setdiff(1:nrow(count_filter), gene_filter)
 length(genes_to_include)
 ```
