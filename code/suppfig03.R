@@ -1,13 +1,12 @@
 # Supplemental Figure 3
 # RNA-seq data quality, PCA, etc ---------------------------------------------------------
 
-dir <- "/project2/gilad/joycehsiao/fucci-seq"
+library(SingleCellExperiment)
+sce_final <- readRDS("data/sce-final.rds")
 
-eset <- readRDS(file.path(dir, "data/eset-final.rds"))
-
-counts <- exprs(eset)
+counts <- assay(sce_final)
 counts <- counts[grep("ENSG", rownames(counts)), ]
-pdata <- pData(eset)
+pdata <- data.frame(colData(sce_final))
 
 log2cpm.all <- t(log2(1+(10^6)*(t(counts)/pdata$molecules)))
 
@@ -40,19 +39,23 @@ range(dd)
 table(pdata$chip_id)
 
 # Result section on sequencing reads
-eset_raw <- readRDS(file.path(dir, "data/eset-raw.rds"))
-mean(pData(eset_raw)$mapped)
-sd(pData(eset_raw)$mapped)
-range(pData(eset_raw)$mapped)
+# prior to filtering
+sce_raw = readRDS("data/sce-raw.rds")
+pdata = data.frame(colData(sce_raw))
+mean(pdata$mapped)
+sd(pdata$mapped)
+range(pdata$mapped)
 
 
 # sequencing results by individual, including
 # all data before filtering of samples or genes
-eset <- readRDS(file.path(dir, "data/eset-final.rds"))
-pdata <- pData(eset)
+# prior to filtering
+sce_final <- readRDS("data/sce-final.rds")
+pdata <- data.frame(colData(sce_final))
 inds <- unique(pdata$chip_id)
 
 # number of reads with a valid UMI and also mapped to the index
+# prior to filtering
 do.call(rbind, lapply(1:length(inds), function(i) {
   tmp <- pdata$mapped[pdata$chip_id == inds[i]]
   data.frame(ind=inds[i],
@@ -60,8 +63,10 @@ do.call(rbind, lapply(1:length(inds), function(i) {
              std=sd(tmp), stringsAsFactors = F) }))
 cbind(mean(pdata$mapped), sd(pdata$mapped))
 
+
 # proportin of unmapped reads with a valid UMI
-percents_unmapped <- pData(eset)$unmapped/pData(eset)$umi
+# prior to filtering
+percents_unmapped <- pdata$unmapped/pdata$umi
 do.call(rbind, lapply(1:length(inds), function(i) {
   tmp <- percents_unmapped[pdata$chip_id == inds[i]]
   data.frame(ind=inds[i],
@@ -76,7 +81,7 @@ length(pdata$chip_id)
 
 
 # fraction of ERCC reads: reads_ercc/mapped
-percentage_ercc <- pData(eset)$ercc_percentage
+percentage_ercc <- pdata$ercc_percentage
 do.call(rbind, lapply(1:length(inds), function(i) {
   tmp <- percentage_ercc[pdata$chip_id == inds[i]]
   data.frame(ind=inds[i],
@@ -86,7 +91,7 @@ cbind(mean(percentage_ercc)*100, sd(percentage_ercc)*100)
 
 
 # total molecular count
-molecules <- pData(eset)$molecules
+molecules <- pdata$molecules
 do.call(rbind, lapply(1:length(inds), function(i) {
   tmp <- molecules[pdata$chip_id == inds[i]]
   data.frame(ind=inds[i],
