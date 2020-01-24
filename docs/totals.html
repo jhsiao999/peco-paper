@@ -443,10 +443,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertree7c203e3161effef08e194873773335685bb9a9fatargetblank7c203e3a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jhsiao999/peco-paper/tree/7c203e3161effef08e194873773335685bb9a9fa" target="_blank">7c203e3</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertreec0f4a2689b862653aa99e4a5b040983260bd1b75targetblankc0f4a26a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jhsiao999/peco-paper/tree/c0f4a2689b862653aa99e4a5b040983260bd1b75" target="_blank">c0f4a26</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertree7c203e3161effef08e194873773335685bb9a9fatargetblank7c203e3a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertreec0f4a2689b862653aa99e4a5b040983260bd1b75targetblankc0f4a26a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -458,9 +458,11 @@ Ignored files:
 
 Untracked files:
     Untracked:  analysis/npreg_trendfilter_quantile.Rmd
-    Untracked:  analysis/reads-v-molecules.Rmd
+    Untracked:  analysis/pca-tf.Rmd
+    Untracked:  analysis/pca_tf.Rmd
     Untracked:  code/fig2_rev.R
     Untracked:  data/fit.quant.rds
+    Untracked:  data/intensity.rds
     Untracked:  data/log2cpm.quant.rds
 
 Unstaged changes:
@@ -507,6 +509,23 @@ Message
 <tbody>
 <tr>
 <td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jhsiao999/peco-paper/d77bc4719576068678f90cfd758561aa99144e44/docs/totals.html" target="_blank">d77bc47</a>
+</td>
+<td>
+jhsiao999
+</td>
+<td>
+2020-01-23
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
 Rmd
 </td>
 <td>
@@ -549,6 +568,43 @@ anno$experiment = factor(anno$experiment)</code></pre>
        title = &quot;Distribution of total raw sequences per single cell&quot;) +
   scale_color_discrete(name = &quot;C1 chip&quot;)</code></pre>
 <p><img src="figure/totals.Rmd/distribution-sequencing-depth-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-distribution-sequencing-depth-1">
+Past versions of distribution-sequencing-depth-1.png
+</button>
+</p>
+<div id="fig-distribution-sequencing-depth-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jhsiao999/peco-paper/blob/d77bc4719576068678f90cfd758561aa99144e44/docs/figure/totals.Rmd/distribution-sequencing-depth-1.png" target="_blank">d77bc47</a>
+</td>
+<td>
+jhsiao999
+</td>
+<td>
+2020-01-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Mapped reads per cell</p>
 <pre class="r"><code>ggplot(anno, aes(x = experiment, y = mapped, color = experiment)) +
   geom_violin() + 
@@ -558,6 +614,43 @@ anno$experiment = factor(anno$experiment)</code></pre>
   theme(legend.title = element_blank(),
         axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))</code></pre>
 <p><img src="figure/totals.Rmd/mapped-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-mapped-1">
+Past versions of mapped-1.png
+</button>
+</p>
+<div id="fig-mapped-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jhsiao999/peco-paper/blob/d77bc4719576068678f90cfd758561aa99144e44/docs/figure/totals.Rmd/mapped-1.png" target="_blank">d77bc47</a>
+</td>
+<td>
+jhsiao999
+</td>
+<td>
+2020-01-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Sum of sequences across the 96 single cells per C1 chip.</p>
 <pre class="r"><code>total_per_experiment &lt;- anno %&gt;%
   group_by(experiment) %&gt;%
@@ -580,6 +673,43 @@ datatable(total_per_experiment,
   theme(legend.title = element_blank(),
         axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))</code></pre>
 <p><img src="figure/totals.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-1">
+Past versions of unnamed-chunk-1-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-1-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jhsiao999/peco-paper/blob/d77bc4719576068678f90cfd758561aa99144e44/docs/figure/totals.Rmd/unnamed-chunk-1-1.png" target="_blank">d77bc47</a>
+</td>
+<td>
+jhsiao999
+</td>
+<td>
+2020-01-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
