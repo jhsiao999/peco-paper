@@ -1,44 +1,64 @@
 # Supplemental Figure 8
-
-library(Biobase)
-library(circular)
-library(peco)
-library(cluster)
 library(ggplot2)
+library(RColorBrewer)
+library(cowplot)
 
-dir <- "/project2/gilad/joycehsiao/fucci-seq"
-eset <- readRDS(file.path(dir, "data/eset-final.rds"))
+sce <- readRDS("data/sce-final.rds")
+counts <- assay(sce)
+counts <- counts[grep("ENSG", rownames(counts)), ]
+pdata <- data.frame(colData(sce))
+pdata$chip_id <- factor(pdata$chip_id)
 
-# Fig 2A. Derive FUCCI-based cell cycle phase
-pca <- prcomp(cbind(pData(eset)$rfp.median.log10sum.adjust,
-                    pData(eset)$gfp.median.log10sum.adjust))
-(pca$sdev^2)/sum(pca$sdev^2)
+# Intensity batch effect ---------------------------------------------------------
+lm.rfp <- lm(rfp.median.log10sum~factor(chip_id)+factor(experiment) + factor(image_label),
+             data = pdata)
+lm.gfp <- lm(gfp.median.log10sum~factor(chip_id)+factor(experiment) + factor(image_label),
+             data = pdata)
+lm.dapi <- lm(dapi.median.log10sum~factor(chip_id)+factor(experiment) + factor(image_label),
+              data = pdata)
 
-plot(pca$x[,1], pca$x[,2], pch=16, cex=.5, xlim=c(-4, 4), ylim=c(-4,4),
-     xlab="PC1 (67%)", ylab="PC2 (33%)",
-     main = "fucci intensities PC1 vs PC2", col="gray50", axes=F)
-axis(1);axis(2)
-abline(h=0,v=0, col="gray50", lty=2)
-par(new=TRUE)
-theta <- coord2rad(pca$x)
-plot(circular(theta), stack=T, shrink=1.3, cex=.5, bins=200)
-theta_final <- shift_origin(as.numeric(theta), 3*pi/4)
+library(car)
+aov.lm.rfp <- Anova(lm.rfp, type = "III")
+aov.lm.gfp <- Anova(lm.gfp, type = "III")
+aov.lm.dapi <- Anova(lm.dapi, type = "III")
 
-# get PAM-based clusters
-theta_final <- shift_origin(as.numeric(theta), 3*pi/4)
-pam_res <- pam(cbind(pData(eset)$rfp.median.log10sum.adjust,
-                     pData(eset)$gfp.median.log10sum.adjust), k=3)
-clust <- data.frame(clust=pam_res$clustering,
-                    sample_id=rownames(pData(df)))
+aov.lm.rfp
+aov.lm.gfp
 
 
-ggplot(data.frame(gfp=pData(df)$gfp.median.log10sum.adjust,
-                  rfp=pData(df)$rfp.median.log10sum.adjust,
-                  clust=factor(clust$clust)), aes(x=gfp, y=rfp, shape=clust)) +
-  geom_point() + theme_classic() +
-  xlab("EGFP score") +
-  ylab("mCherry score") +
-  scale_shape_manual(values=c(16,1,4),
-                     labels = c("G1", "S", "G2M"),
-                     name = "") +
-  ggtitle("")
+plot_grid(
+  ggplot(pdata,
+         aes(x=chip_id, y=gfp.median.log10sum,
+             fill=chip_id)) +
+    geom_violin(alpha=.5) + geom_boxplot(width=.1, fill="gray90") +
+    ylab("FUCC score") + xlab("Individual") +
+    ggtitle("GFP before batch-correction") + labs(fill="experiment") +
+    theme(axis.text.x  = element_text(angle=45, vjust=1, hjust=1,size=10),
+          axis.text.y  = element_text(angle=0, vjust=0.2, size=10)) +
+    theme(legend.position="none"),
+  ggplot(pdata,
+         aes(x=chip_id, y=rfp.median.log10sum, fill=chip_id)) +
+    geom_violin(alpha=.5) + geom_boxplot(width=.1, fill="gray90") +
+    ylab("FUCC score") + xlab("Individual") +
+    ggtitle("RFP before batch-correction") + labs(fill="experiment") +
+    theme(axis.text.x  = element_text(angle=45, vjust=1, hjust=1,size=10),
+          axis.text.y  = element_text(angle=0, vjust=0.2, size=10)) +
+    theme(legend.position="none"),
+  ggplot(pdata,
+         aes(x=chip_id, y=gfp.median.log10sum.adjust, fill=chip_id)) +
+    geom_violin(alpha=.5) + geom_boxplot(width=.1, fill="gray90") +
+    ylab("FUCC score") + xlab("Individual") +
+    ggtitle("GFP after batch-correction") + labs(fill="experiment") +
+    theme(axis.text.x  = element_text(angle=45, vjust=1, hjust=1,size=10),
+          axis.text.y  = element_text(angle=0, vjust=0.2, size=10)) +
+    theme(legend.position="none"),
+  ggplot(pdata,
+         aes(x=chip_id, y=rfp.median.log10sum.adjust, fill=chip_id)) +
+    geom_violin(alpha=.5) + geom_boxplot(width=.1, fill="gray90") +
+    ylab("FUCC score") + xlab("Individual") +
+    ggtitle("RFP after batch-correction") + labs(fill="experiment") +
+    theme(axis.text.x  = element_text(angle=45, vjust=1, hjust=1,size=10),
+          axis.text.y  = element_text(angle=0, vjust=0.2, size=10)) +
+    theme(legend.position="none"),
+  labels=LETTERS[1:4])
+
