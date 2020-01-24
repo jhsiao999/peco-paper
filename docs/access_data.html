@@ -9,6 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="John Blischak, Joyce Hsiao" />
 
 
 <title>Access data</title>
@@ -19,6 +20,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -169,6 +173,101 @@ $(document).ready(function () {
 
 
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
 
 
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
@@ -218,13 +317,14 @@ div.section {
 
 
 <h1 class="title toc-ignore">Access data</h1>
+<h4 class="author"><em>John Blischak, Joyce Hsiao</em></h4>
 
 </div>
 
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -233,7 +333,7 @@ div.section {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -242,22 +342,22 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-09-13
+<strong>Last updated:</strong> 2020-01-23
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>peco-paper/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
 </p>
 <p>
 This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
-  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.4.0). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.0). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
 </p>
 <hr>
 </div>
 <div id="checks" class="tab-pane fade">
-<div class="panel-group" id="workflowr-checks">
+<div id="workflowr-checks" class="panel-group">
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
@@ -273,57 +373,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongobjectspresent"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>Environment:</strong> objects present </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
 </p>
 </div>
-<div id="strongEnvironmentstrongobjectspresent" class="panel-collapse collapse">
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
 <div class="panel-body">
-
-<p>
-The global environment had objects present when the code in the R Markdown file was run. These objects can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment. Use <code>wflow_publish</code> or <code>wflow_build</code> to ensure that the code is always run in an empty environment.
-</p>
-<p>
-The following objects were defined in the global environment when these results were created:
-</p>
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th style="text-align:left;">
-Name
-</th>
-<th style="text-align:left;">
-Class
-</th>
-<th style="text-align:left;">
-Size
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-data
-</td>
-<td style="text-align:left;">
-environment
-</td>
-<td style="text-align:left;">
-56 bytes
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-env
-</td>
-<td style="text-align:left;">
-environment
-</td>
-<td style="text-align:left;">
-56 bytes
-</td>
-</tr>
-</tbody>
-</table>
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
 </div>
 </div>
 </div>
@@ -378,10 +433,10 @@ environment
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertree33b9a3431175376a7eef81ea5da931fca7479d65targetblank33b9a34a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jhsiao999/peco-paper/tree/33b9a3431175376a7eef81ea5da931fca7479d65" target="_blank">33b9a34</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertree39f5a01fe53bf66ee03924fef5e01cb256eb5a8btargetblank39f5a01a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jhsiao999/peco-paper/tree/39f5a01fe53bf66ee03924fef5e01cb256eb5a8b" target="_blank">39f5a01</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertree33b9a3431175376a7eef81ea5da931fca7479d65targetblank33b9a34a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertree39f5a01fe53bf66ee03924fef5e01cb256eb5a8btargetblank39f5a01a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -392,15 +447,15 @@ Ignored files:
     Ignored:    .Rproj.user/
 
 Untracked files:
-    Untracked:  code/suppfig11.R
-    Untracked:  code/suppfig12.R
-    Untracked:  code/suppfig13.R
-    Untracked:  code/suppfig14.R
-    Untracked:  code/suppfig16.R
+    Untracked:  analysis/npreg_trendfilter_quantile.Rmd
+    Untracked:  code/fig2_rev.R
+    Untracked:  data/fit.quant.rds
+    Untracked:  data/intensity.rds
+    Untracked:  data/log2cpm.quant.rds
 
 Unstaged changes:
-    Modified:   README.md
-    Modified:   code/suppfig10.R
+    Modified:   analysis/index.Rmd
+    Modified:   code/fig2.R
 
 </code></pre>
 <p>
@@ -439,6 +494,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jhsiao999/peco-paper/blob/39f5a01fe53bf66ee03924fef5e01cb256eb5a8b/analysis/access_data.Rmd" target="_blank">39f5a01</a>
+</td>
+<td>
+jhsiao999
+</td>
+<td>
+2020-01-23
+</td>
+<td>
+data processing steps
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jhsiao999/peco-paper/bf95f6861e0bb58527fab9ffb85e91507f63c51e/docs/access_data.html" target="_blank">bf95f68</a>
+</td>
+<td>
+jhsiao999
+</td>
+<td>
+2019-09-13
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -480,24 +569,31 @@ wflow_publish(c(“analysis/index.Rmd”, “analysis/access_data.Rmd”, “ana
 </div>
 </div>
 </div>
-<p>You can find <a href="https://jdblischak.github.io/fucci-seq/data-overview.html">our finalized datasets</a> on our project website.</p>
 <p>Here are some useful links for how we processed our data.</p>
+<div id="data-filtering-and-normalization" class="section level2">
+<h2>Data filtering and normalization</h2>
 <p>For imaging data:</p>
 <ul>
-<li><a href="https://jdblischak.github.io/fucci-seq/images-process.html">Processing FUCCI and DAPI images</a></li>
-<li><a href="https://jdblischak.github.io/fucci-seq/images-normalize-anova.html">Correcting for C1 batch effects in FUCCI intensity data</a></li>
+<li>First, we <a href="https://jdblischak.github.io/fucci-seq/images-process.html">processed FUCCI and DAPI images</a> and computed background-corrected sum intensity for each cell image.</li>
+<li>Second, we <a href="https://jhsiao999.github.io/peco-paper/images_batchcorrect.html">corrected for C1 batch effects in FUCCI intensity data</a>.</li>
 </ul>
-<p>For scRNA-seq data,</p>
+<p>For scRNA-seq data:</p>
 <ul>
-<li>First, we performed sample QC, including
-<ul>
-<li>computing <a href="https://jdblischak.github.io/fucci-seq/sampleqc.html">sample quality metrics</a>, such as total number of mapped reads, ERCC percentages, etc.</li>
-<li><a href="https://jhsiao999.github.io/peco-paper/sampleqc_lda.html">determining number of cells captured in each C1 well using linear discriminant analysis models</a>)</li>
-<li>assessing potential C1 batch effects in <a href="https://jdblischak.github.io/fucci-seq/totals.html">sequencing depth</a> and <a href="https://jdblischak.github.io/fucci-seq/reads-v-molecules.html">read to molecule conversion rate</a></li>
-</ul></li>
-<li><p>Second, <a href="https://jdblischak.github.io/fucci-seq/gene-filtering.html">we excluded over-expressed and lowly-expressed genes</a>.</p></li>
-<li><p>Finally, we used <a href="https://jdblischak.github.io/fucci-seq/pca-tf.html">Principal Component Analysis</a> to examined potential sources of gene expression variation.</p></li>
+<li><p>First, we assessed potential C1 batch effects in <a href="https://jhsiao999.github.io/peco-paper/totals.html">sequencing depth</a> and <a href="https://jhsiao999.github.io/peco-paper/reads-v-molecules.html">read to molecule conversion rate</a>.</p></li>
+<li><p>Second, we identified high quality samples using <a href="https://jhsiao999.github.io/peco-paper/sampleqc.html">sample quality metrics</a>, such as total number of mapped reads, ERCC percentages, etc.</p></li>
+<li><p>Third, <a href="https://jhsiao999.github.io/peco-paper/gene_filtering.html">we excluded over-expressed and lowly-expressed genes</a>.</p></li>
+<li><p>Finally, we used <a href="https://jhsiao999.github.io/peco-paper/pca_tf.html">Principal Component Analysis</a> to examined potential sources of gene expression variation.</p></li>
 </ul>
+<p>To create the final dataset for analysis:</p>
+<ul>
+<li>We <a href="code/output-raw-2-final.R">combined scRNA-seq with image intensity data</a>.</li>
+</ul>
+</div>
+<div id="downloading-the-data-files" class="section level2">
+<h2>Downloading the data files</h2>
+<p>You have two main options for downloading the data files. First, you can manually download the individual files by clicking on the links on this page or navigating to the files in the <a href="https://github.com/jdblischak/fucci-seq">fucci-seq</a> GitHub repository. This is the recommended strategy if you only need a few data files.</p>
+<p>Second, you can install <a href="https://git-lfs.github.com/">git-lfs</a>. To handle large files, we used Git Large File Storage (LFS). This means that the files that you download with <code>git clone</code> are only plain text files that contain identifiers for the files saved on GitHub’s servers. If you want to download all of the data files at once, you can do this with after you install git-lfs.</p>
+<p>To install git-lfs, follow their instructions to download, install, and setup (<code>git lfs install</code>). Alternatively, if you use conda, you can install git-lfs with <code>conda install -c conda-forge git-lfs</code>. Once installed, you can download the latest version of the data files with <code>git lfs pull</code>.</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -524,11 +620,13 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 loaded via a namespace (and not attached):
- [1] workflowr_1.4.0 Rcpp_1.0.2      digest_0.6.20   rprojroot_1.3-2
- [5] backports_1.1.2 git2r_0.25.2    magrittr_1.5    evaluate_0.12  
- [9] highr_0.7       stringi_1.2.4   fs_1.3.1        whisker_0.3-2  
-[13] rmarkdown_1.10  tools_3.5.1     stringr_1.3.1   glue_1.3.0     
-[17] yaml_2.2.0      compiler_3.5.1  htmltools_0.3.6 knitr_1.20     </code></pre>
+ [1] workflowr_1.6.0 Rcpp_1.0.3      digest_0.6.20   later_0.7.5    
+ [5] rprojroot_1.3-2 R6_2.4.0        backports_1.1.2 git2r_0.26.1   
+ [9] magrittr_1.5    evaluate_0.12   stringi_1.2.4   fs_1.3.1       
+[13] promises_1.0.1  whisker_0.3-2   rmarkdown_1.10  tools_3.5.1    
+[17] stringr_1.3.1   glue_1.3.0      httpuv_1.4.5    yaml_2.2.0     
+[21] compiler_3.5.1  htmltools_0.3.6 knitr_1.20     </code></pre>
+</div>
 </div>
 
 
@@ -545,6 +643,8 @@ footer is added to webpages before the MathJax javascript. -->
 </script>
 
 
+</div>
+</div>
 
 </div>
 
