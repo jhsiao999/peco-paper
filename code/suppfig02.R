@@ -5,22 +5,15 @@ library("cowplot")
 library("dplyr")
 library("ggplot2")
 library("MASS")
-library("Biobase")
+library("SingleCellExperiment")
 
 # The palette with grey:
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 indi_palette <- c("tomato4", "chocolate1", "rosybrown", "purple4", "plum3", "slateblue")
 
 
-library(Biobase)
-library(circular)
-library(peco)
-library(cluster)
-library(ggplot2)
-
-dir <- "/project2/gilad/joycehsiao/fucci-seq"
-eset_raw <- readRDS(file.path(dir, "data/eset-raw.rds"))
-anno <- pData(eset_raw)
+sce_raw <- readRDS("data/sce-raw.rds")
+anno <- data.frame(colData(sce_raw))
 
 
 ## Total mapped reads
@@ -43,7 +36,8 @@ plot_reads <- ggplot(anno[anno$cell_number == 0 |
   geom_density(alpha = 0.5) +
   geom_vline(xintercept = cut_off_reads, colour="grey", linetype = "longdash") +
   labs(x = "Total mapped reads", title = "Number of total mapped reads", fill = "Cell number")
-plot_reads
+
+
 
 
 ## Unmapped ratios
@@ -70,7 +64,8 @@ plot_unmapped <- ggplot(anno[anno$cell_number == 0 |
   geom_density(alpha = 0.5) +
   geom_vline(xintercept = cut_off_unmapped *100, colour="grey", linetype = "longdash") +
   labs(x = "Unmapped reads/ total reads", title = "Unmapped reads percentage")
-plot_unmapped
+
+
 
 
 ## ERCC percentage
@@ -96,7 +91,6 @@ plot_ercc <- ggplot(anno[anno$cell_number == 0 |
   geom_density(alpha = 0.5) +
   geom_vline(xintercept = cut_off_ercc *100, colour="grey", linetype = "longdash") +
   labs(x = "ERCC reads / total mapped reads", title = "ERCC reads percentage")
-plot_ercc
 
 
 
@@ -118,7 +112,9 @@ plot_gene <- ggplot(anno[anno$cell_number == 0 |
   geom_density(alpha = 0.5) +
   geom_vline(xintercept = cut_off_genes, colour="grey", linetype = "longdash") +
   labs(x = "Gene numbers", title = "Numbers of detected genes")
-plot_gene
 
+
+plot_grid(plot_reads, plot_unmapped,
+          plot_ercc, plot_gene, labels = LETTERS[1:4], ncol = 2)
 
 
