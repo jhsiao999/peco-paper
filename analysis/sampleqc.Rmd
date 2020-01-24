@@ -28,7 +28,6 @@ sce_raw <- readRDS("data/sce-raw.rds")
 anno <- data.frame(colData(sce_raw))
 ```
 
----
 
 ## Total mapped reads 
 
@@ -58,7 +57,6 @@ plot_reads <- ggplot(anno[anno$cell_number == 0 |
 plot_reads
 ```
 
----
 
 ## Unmapped ratios
 
@@ -116,7 +114,6 @@ plot_grid(unmapped_exp + theme(legend.position = "none"),
           labels = letters[1:2])
 ```
 
----
 
 ## ERCC percentage 
 
@@ -172,7 +169,6 @@ plot_grid(ercc_exp + theme(legend.position = "none"),
           labels = letters[1:2])
 ```
 
----
 
 ## Number of genes detected 
 
@@ -200,6 +196,7 @@ plot_gene <- ggplot(anno[anno$cell_number == 0 |
 plot_gene
 ```
 
+
 ```{r gene-number-exp}
 number_exp <- ggplot(anno, aes(x = as.factor(experiment), y = detect_hs, color = as.factor(experiment))) +
   geom_violin() + 
@@ -223,7 +220,6 @@ plot_grid(number_exp + theme(legend.position = "none"),
           labels = letters[1:2])
 ```
 
----
 
 ## FUCCI transgene 
 
@@ -246,7 +242,7 @@ plot_grid(egfp_mol + theme(legend.position = c(.5,.9)),
           labels = letters[1:2])
 ```
 
----
+
 
 ## Linear Discriminat Analysis
 
