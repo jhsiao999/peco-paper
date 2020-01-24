@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Po-Yuan Tung" />
+
+
+<title>Sample QC</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">peco-paper</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/jhsiao999/peco-paper">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Sample QC</h1>
+<h4 class="author"><em>Po-Yuan Tung</em></h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-01-23
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>peco-paper/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.0). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20190814code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20190814)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20190814code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20190814)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertree0f6f533a2048a420a19f80fe3885edd5972eaa06targetblank0f6f533a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jhsiao999/peco-paper/tree/0f6f533a2048a420a19f80fe3885edd5972eaa06" target="_blank">0f6f533</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertree0f6f533a2048a420a19f80fe3885edd5972eaa06targetblank0f6f533a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  analysis/npreg_trendfilter_quantile.Rmd
+    Untracked:  code/fig2_rev.R
+    Untracked:  data/fit.quant.rds
+    Untracked:  data/log2cpm.quant.rds
+
+Unstaged changes:
+    Modified:   analysis/access_data.Rmd
+    Modified:   analysis/index.Rmd
+    Modified:   code/fig2.R
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jhsiao999/peco-paper/blob/0f6f533a2048a420a19f80fe3885edd5972eaa06/analysis/sampleqc.Rmd" target="_blank">0f6f533</a>
+</td>
+<td>
+jhsiao999
+</td>
+<td>
+2020-01-23
+</td>
+<td>
+copy and update eset to sce in sampleqc.Rmd
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="setup" class="section level2">
+<h2>Setup</h2>
+<pre class="r"><code>library(&quot;cowplot&quot;)
+library(&quot;dplyr&quot;)
+library(&quot;edgeR&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;MASS&quot;)
+library(&quot;tibble&quot;)
+library(&quot;SingleCellExperiment&quot;)
+theme_set(cowplot::theme_cowplot())
+
+# The palette with grey:
+cbPalette &lt;- c(&quot;#999999&quot;, &quot;#E69F00&quot;, &quot;#56B4E9&quot;, &quot;#009E73&quot;, &quot;#F0E442&quot;, &quot;#0072B2&quot;, &quot;#D55E00&quot;, &quot;#CC79A7&quot;)
+indi_palette &lt;- c(&quot;tomato4&quot;, &quot;chocolate1&quot;, &quot;rosybrown&quot;, &quot;purple4&quot;, &quot;plum3&quot;, &quot;slateblue&quot;)</code></pre>
+<pre class="r"><code>sce_raw &lt;- readRDS(&quot;data/sce-raw.rds&quot;)
+anno &lt;- data.frame(colData(sce_raw))</code></pre>
+<hr />
+</div>
+<div id="total-mapped-reads" class="section level2">
+<h2>Total mapped reads</h2>
+<p>Note: Using the 20 % cutoff of samples with no cells excludes all the samples</p>
+<pre class="r"><code>## calculate the cut-off  
+cut_off_reads &lt;- quantile(anno[anno$cell_number == 0,&quot;mapped&quot;], 0.82)
+
+cut_off_reads</code></pre>
+<pre><code>    82% 
+1309921 </code></pre>
+<pre class="r"><code>anno$cut_off_reads &lt;- anno$mapped &gt; cut_off_reads
+
+## numbers of cells 
+sum(anno[anno$cell_number == 1, &quot;mapped&quot;] &gt; cut_off_reads)</code></pre>
+<pre><code>[1] 978</code></pre>
+<pre class="r"><code>sum(anno[anno$cell_number == 1, &quot;mapped&quot;] &lt;= cut_off_reads)</code></pre>
+<pre><code>[1] 349</code></pre>
+<pre class="r"><code>## density plots
+plot_reads &lt;- ggplot(anno[anno$cell_number == 0 |
+                          anno$cell_number == 1 , ],
+       aes(x = mapped, fill = as.factor(cell_number))) + 
+       geom_density(alpha = 0.5) +
+       geom_vline(xintercept = cut_off_reads, colour=&quot;grey&quot;, linetype = &quot;longdash&quot;) +
+       labs(x = &quot;Total mapped reads&quot;, title = &quot;Number of total mapped reads&quot;, fill = &quot;Cell number&quot;)
+
+plot_reads</code></pre>
+<p><img src="figure/sampleqc.Rmd/total-reads-1.png" width="672" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+<div id="unmapped-ratios" class="section level2">
+<h2>Unmapped ratios</h2>
+<p>Note: Using the 40 % cutoff of samples with no cells excludes all the samples</p>
+<pre class="r"><code>## calculate unmapped ratios
+anno$unmapped_ratios &lt;- anno$unmapped/anno$umi
+
+## cut off 
+cut_off_unmapped &lt;- quantile(anno[anno$cell_number == 0,&quot;unmapped_ratios&quot;], 0.40)
+
+cut_off_unmapped</code></pre>
+<pre><code>      40% 
+0.4362152 </code></pre>
+<pre class="r"><code>anno$cut_off_unmapped &lt;- anno$unmapped_ratios &lt; cut_off_unmapped
+
+## numbers of cells 
+sum(anno[anno$cell_number == 1, &quot;unmapped_ratios&quot;] &gt;= cut_off_unmapped)</code></pre>
+<pre><code>[1] 221</code></pre>
+<pre class="r"><code>sum(anno[anno$cell_number == 1, &quot;unmapped_ratios&quot;] &lt; cut_off_unmapped)</code></pre>
+<pre><code>[1] 1106</code></pre>
+<pre class="r"><code>## density plots
+plot_unmapped &lt;- ggplot(anno[anno$cell_number == 0 |
+                             anno$cell_number == 1 , ],
+       aes(x = unmapped_ratios *100, fill = as.factor(cell_number))) + 
+       geom_density(alpha = 0.5) +
+       geom_vline(xintercept = cut_off_unmapped *100, colour=&quot;grey&quot;, linetype = &quot;longdash&quot;) +
+       labs(x = &quot;Unmapped reads/ total reads&quot;, title = &quot;Unmapped reads percentage&quot;)
+
+plot_unmapped</code></pre>
+<p><img src="figure/sampleqc.Rmd/unmapped-ratios-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Look at the unmapped percentage per sample by C1 experimnet and by individual.</p>
+<pre class="r"><code>unmapped_exp &lt;- ggplot(anno, aes(x = as.factor(experiment), y = unmapped_ratios, color = as.factor(experiment))) +
+  geom_violin() + 
+  geom_boxplot(alpha = .01, width = .2, position = position_dodge(width = .9)) +
+  labs(x = &quot;C1 chip&quot;, y = &quot;Unmapped reads/ total reads&quot;,
+       title = &quot;Unmapped reads percentage&quot;) +
+  theme(legend.title = element_blank(),
+        axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+
+unmapped_indi &lt;- ggplot(anno, aes(x = chip_id, y = unmapped_ratios, color = as.factor(chip_id))) +
+  geom_violin() + 
+  geom_boxplot(alpha = .01, width = .2, position = position_dodge(width = .9)) +
+  scale_color_manual(values = indi_palette) +
+  labs(x = &quot;C1 chip&quot;, y = &quot;Unmapped reads/ total reads&quot;,
+       title = &quot;Unmapped reads percentage&quot;) +
+  theme(legend.title = element_blank(),
+        axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+
+plot_grid(unmapped_exp + theme(legend.position = &quot;none&quot;),
+          unmapped_indi + theme(legend.position = &quot;none&quot;),
+          labels = letters[1:2])</code></pre>
+<p><img src="figure/sampleqc.Rmd/unmapped_exp-1.png" width="672" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+<div id="ercc-percentage" class="section level2">
+<h2>ERCC percentage</h2>
+<pre class="r"><code>## calculate ercc reads percentage
+anno$ercc_percentage &lt;- anno$reads_ercc / anno$mapped
+
+## cut off 
+cut_off_ercc &lt;- quantile(anno[anno$cell_number == 0,&quot;ercc_percentage&quot;], 0.20)
+
+cut_off_ercc</code></pre>
+<pre><code>     20% 
+0.179423 </code></pre>
+<pre class="r"><code>anno$cut_off_ercc &lt;- anno$ercc_percentage &lt; cut_off_ercc
+
+## numbers of cells 
+sum(anno[anno$cell_number == 1, &quot;ercc_percentage&quot;] &gt;= cut_off_ercc)</code></pre>
+<pre><code>[1] 223</code></pre>
+<pre class="r"><code>sum(anno[anno$cell_number == 1, &quot;ercc_percentage&quot;] &lt; cut_off_ercc)</code></pre>
+<pre><code>[1] 1104</code></pre>
+<pre class="r"><code>## density plots
+plot_ercc &lt;- ggplot(anno[anno$cell_number == 0 |
+                                anno$cell_number == 1 , ],
+       aes(x = ercc_percentage *100, fill = as.factor(cell_number))) + 
+       geom_density(alpha = 0.5) +
+       geom_vline(xintercept = cut_off_ercc *100, colour=&quot;grey&quot;, linetype = &quot;longdash&quot;) +
+       labs(x = &quot;ERCC reads / total mapped reads&quot;, title = &quot;ERCC reads percentage&quot;)
+
+plot_ercc</code></pre>
+<p><img src="figure/sampleqc.Rmd/ercc-percentage-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Look at the ERCC spike-in percentage per sample by C1 experimnet and by individual.</p>
+<pre class="r"><code>ercc_exp &lt;- ggplot(anno, aes(x = as.factor(experiment), y = ercc_percentage, color = as.factor(experiment))) +
+  geom_violin() + 
+  geom_boxplot(alpha = .01, width = .2, position = position_dodge(width = .9)) +
+  labs(x = &quot;C1 chip&quot;, y = &quot;ERCC percentage&quot;,
+       title = &quot;ERCC percentage per sample&quot;) +
+  theme(legend.title = element_blank(),
+        axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+
+ercc_indi &lt;- ggplot(anno, aes(x = chip_id, y = ercc_percentage, color = as.factor(chip_id))) +
+  geom_violin() + 
+  geom_boxplot(alpha = .01, width = .2, position = position_dodge(width = .9)) +
+  scale_colour_manual(values = indi_palette) +
+  labs(x = &quot;C1 chip&quot;, y = &quot;ERCC percentage&quot;,
+       title = &quot;ERCC percentage per sample&quot;) +
+  theme(legend.title = element_blank(),
+        axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+
+plot_grid(ercc_exp + theme(legend.position = &quot;none&quot;),
+          ercc_indi + theme(legend.position = &quot;none&quot;),
+          labels = letters[1:2])</code></pre>
+<p><img src="figure/sampleqc.Rmd/ercc_exp-1.png" width="672" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+<div id="number-of-genes-detected" class="section level2">
+<h2>Number of genes detected</h2>
+<pre class="r"><code>## cut off 
+cut_off_genes &lt;- quantile(anno[anno$cell_number == 0,&quot;detect_hs&quot;], 0.80)
+
+cut_off_genes</code></pre>
+<pre><code>   80% 
+6291.8 </code></pre>
+<pre class="r"><code>anno$cut_off_genes &lt;- anno$detect_hs &gt; cut_off_genes
+
+## numbers of cells 
+sum(anno[anno$cell_number == 1, &quot;detect_hs&quot;] &gt; cut_off_genes)</code></pre>
+<pre><code>[1] 1040</code></pre>
+<pre class="r"><code>sum(anno[anno$cell_number == 1, &quot;detect_hs&quot;] &lt;= cut_off_genes)</code></pre>
+<pre><code>[1] 287</code></pre>
+<pre class="r"><code>## density plots
+plot_gene &lt;- ggplot(anno[anno$cell_number == 0 |
+                         anno$cell_number == 1 , ],
+       aes(x = detect_hs, fill = as.factor(cell_number))) + 
+       geom_density(alpha = 0.5) +
+       geom_vline(xintercept = cut_off_genes, colour=&quot;grey&quot;, linetype = &quot;longdash&quot;) +
+       labs(x = &quot;Gene numbers&quot;, title = &quot;Numbers of detected genes&quot;)
+
+plot_gene</code></pre>
+<p><img src="figure/sampleqc.Rmd/gene-number-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>number_exp &lt;- ggplot(anno, aes(x = as.factor(experiment), y = detect_hs, color = as.factor(experiment))) +
+  geom_violin() + 
+  geom_boxplot(alpha = .01, width = .2, position = position_dodge(width = .9)) +
+  labs(x = &quot;C1 chip&quot;, y = &quot;Number of genes detected&quot;,
+       title = &quot;Number of genes per sample&quot;) +
+  theme(legend.title = element_blank(),
+        axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+
+number_indi &lt;- ggplot(anno, aes(x = chip_id, y = detect_hs, color = as.factor(chip_id))) +
+  geom_violin() + 
+  geom_boxplot(alpha = .01, width = .2, position = position_dodge(width = .9)) +
+  scale_colour_manual(values = indi_palette) +
+  labs(x = &quot;C1 chip&quot;, y = &quot;Number of genes detected&quot;,
+       title = &quot;Number of genes per sample&quot;) +
+  theme(legend.title = element_blank(),
+        axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+
+plot_grid(number_exp + theme(legend.position = &quot;none&quot;),
+          number_indi + theme(legend.position = &quot;none&quot;),
+          labels = letters[1:2])</code></pre>
+<p><img src="figure/sampleqc.Rmd/gene-number-exp-1.png" width="672" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+<div id="fucci-transgene" class="section level2">
+<h2>FUCCI transgene</h2>
+<pre class="r"><code>## plot molecule number of egfp and mCherry 
+egfp_mol &lt;- ggplot(anno[anno$cell_number == 0 |
+            anno$cell_number == 1 , ],
+       aes(x = mol_egfp, fill = as.factor(cell_number))) + 
+       geom_density(alpha = 0.5) +
+       labs(x = &quot;EGFP molecule numbers&quot;, title = &quot;Numbers of EGFP molecules&quot;)
+
+mcherry_mol &lt;- ggplot(anno[anno$cell_number == 0 |
+            anno$cell_number == 1 , ],
+       aes(x = mol_mcherry, fill = as.factor(cell_number))) + 
+       geom_density(alpha = 0.5) +
+       labs(x = &quot;mCherry molecule numbers&quot;, title = &quot;Numbers of mCherry molecules&quot;)
+
+plot_grid(egfp_mol + theme(legend.position = c(.5,.9)), 
+          mcherry_mol + theme(legend.position = &quot;none&quot;),
+          labels = letters[1:2])</code></pre>
+<p><img src="figure/sampleqc.Rmd/fucci-1.png" width="672" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+<div id="linear-discriminat-analysis" class="section level2">
+<h2>Linear Discriminat Analysis</h2>
+<div id="total-molecule-vs-concentration" class="section level3">
+<h3>Total molecule vs concentration</h3>
+<pre class="r"><code>## create 3 groups according to cell number
+group_3 &lt;- rep(&quot;two&quot;,dim(anno)[1])
+         group_3[grep(&quot;0&quot;, anno$cell_number)] &lt;- &quot;no&quot;
+         group_3[grep(&quot;1&quot;, anno$cell_number)] &lt;- &quot;one&quot;
+
+## create data frame
+data &lt;- anno %&gt;% dplyr::select(experiment:concentration, mapped, molecules)
+data &lt;- data.frame(data, group = group_3)
+
+## perform lda
+data_lda &lt;- lda(group ~ concentration + molecules, data = data)
+data_lda_p &lt;- predict(data_lda, newdata = data[,c(&quot;concentration&quot;, &quot;molecules&quot;)])$class
+
+## determine how well the model fix
+table(data_lda_p, data[, &quot;group&quot;])</code></pre>
+<pre><code>          
+data_lda_p   no  one  two
+       no     0    0    0
+       one   16 1317  147
+       two    0   11   45</code></pre>
+<pre class="r"><code>data$data_lda_p &lt;- data_lda_p
+
+## identify the outlier
+outliers_lda &lt;- data %&gt;% rownames_to_column(&quot;sample_id&quot;) %&gt;% filter(cell_number == 1, data_lda_p == &quot;two&quot;)
+outliers_lda</code></pre>
+<pre><code>      sample_id experiment well cell_number concentration  mapped
+1  20170910-H09   20170910  H09           1     1.6540139 3013565
+2  20170914-B04   20170914  B04           1     1.3324572 2284753
+3  20170914-C04   20170914  C04           1     1.2389752 2489489
+4  20170916-A08   20170916  A08           1     0.4900687 2276922
+5  20170921-A12   20170921  A12           1     1.7967793 1868421
+6  20170921-C01   20170921  C01           1     1.4171401 1543484
+7  20170921-D04   20170921  D04           1     1.0853582 1753336
+8  20170921-H09   20170921  H09           1     0.5802048 1541776
+9  20170924-A04   20170924  A04           1     0.9856825 1414428
+10 20170924-E01   20170924  E01           1     0.4581647 1817801
+11 20170924-E03   20170924  E03           1     0.4484874 1924140
+   molecules group data_lda_p
+1     281516   one        two
+2     190473   one        two
+3     205586   one        two
+4     169065   one        two
+5     205868   one        two
+6     202756   one        two
+7     255148   one        two
+8     415411   one        two
+9     253058   one        two
+10    187137   one        two
+11    346383   one        two</code></pre>
+<pre class="r"><code>## create filter
+anno$molecule_outlier &lt;- row.names(anno) %in% outliers_lda$sample_id
+
+## plot before and after
+plot_before &lt;- ggplot(data, aes(x = concentration, y = molecules / 10^3,
+               color = as.factor(group))) +
+               geom_text(aes(label = cell_number, alpha = 0.5)) +
+               labs(x = &quot;Concentration&quot;, y = &quot;Gene molecules (thousands)&quot;, title = &quot;Before&quot;) +
+               scale_color_brewer(palette = &quot;Dark2&quot;) +
+               theme(legend.position = &quot;none&quot;)
+
+
+plot_after &lt;- ggplot(data, aes(x = concentration, y = molecules / 10^3,
+               color = as.factor(data_lda_p))) +
+               geom_text(aes(label = cell_number, alpha = 0.5)) +
+               labs(x = &quot;Concentration&quot;, y = &quot;Gene molecules (thousands)&quot;, title = &quot;After&quot;) +
+               scale_color_brewer(palette = &quot;Dark2&quot;) +
+               theme(legend.position = &quot;none&quot;)
+
+plot_grid(plot_before + theme(legend.position=c(.8,.85)), 
+          plot_after + theme(legend.position = &quot;none&quot;),
+          labels = LETTERS[1:2])</code></pre>
+<p><img src="figure/sampleqc.Rmd/lda-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div id="reads-to-molecule-conversion" class="section level3">
+<h3>Reads to molecule conversion</h3>
+<pre class="r"><code>## calculate convertion
+anno$ercc_conversion &lt;- anno$mol_ercc / anno$reads_ercc
+
+anno$conversion &lt;- anno$mol_hs / anno$reads_hs
+
+## try lda
+data$conversion &lt;- anno$conversion
+data$ercc_conversion &lt;- anno$ercc_conversion
+
+data_ercc_lda &lt;- lda(group ~ ercc_conversion + conversion, data = data)
+
+data_ercc_lda_p &lt;- predict(data_ercc_lda,  newdata = data[,c(&quot;ercc_conversion&quot;, &quot;conversion&quot;)])$class
+
+## determine how well the model fix
+table(data_ercc_lda_p, data[, &quot;group&quot;])</code></pre>
+<pre><code>               
+data_ercc_lda_p   no  one  two
+            no     5   20    0
+            one   11 1303  166
+            two    0    5   26</code></pre>
+<pre class="r"><code>data$data_ercc_lda_p &lt;- data_ercc_lda_p
+
+## identify the outlier
+outliers_conversion &lt;- data %&gt;% rownames_to_column(&quot;sample_id&quot;) %&gt;% filter(cell_number == 1, data_ercc_lda_p == &quot;two&quot;)
+outliers_conversion</code></pre>
+<pre><code>     sample_id experiment well cell_number concentration  mapped molecules
+1 20170908-C07   20170908  C07           1     2.6936993  850577     95163
+2 20170920-A10   20170920  A10           1     0.1369852   81371     28680
+3 20170921-H09   20170921  H09           1     0.5802048 1541776    415411
+4 20170924-A04   20170924  A04           1     0.9856825 1414428    253058
+5 20170924-E03   20170924  E03           1     0.4484874 1924140    346383
+  group data_lda_p conversion ercc_conversion data_ercc_lda_p
+1   one        one  0.1126820      0.08186312             two
+2   one        one  0.3585794      0.24727354             two
+3   one        two  0.2716902      0.13085675             two
+4   one        two  0.1809263      0.09389137             two
+5   one        two  0.1813526      0.10260360             two</code></pre>
+<pre class="r"><code>## create filter
+anno$conversion_outlier &lt;- row.names(anno) %in% outliers_conversion$sample_id
+
+## plot before and after
+plot_ercc_before &lt;- ggplot(data, aes(x = ercc_conversion, y = conversion,
+               color = as.factor(group))) +
+               geom_text(aes(label = cell_number, alpha = 0.5)) +
+               labs(x = &quot;Convertion of ERCC spike-ins&quot;, y = &quot;Conversion of genes&quot;, title = &quot;Before&quot;) +
+               scale_color_brewer(palette = &quot;Dark2&quot;) +
+               theme(legend.position = &quot;none&quot;)
+
+plot_ercc_after &lt;- ggplot(data, aes(x = ercc_conversion, y = conversion,
+               color = as.factor(data_ercc_lda_p))) +
+               geom_text(aes(label = cell_number, alpha = 0.5)) +
+               labs(x = &quot;Convertion of ERCC spike-ins&quot;, y = &quot;Conversion of genes&quot;, title = &quot;After&quot;) +
+               scale_color_brewer(palette = &quot;Dark2&quot;) +
+               theme(legend.position = &quot;none&quot;)
+
+plot_grid(plot_ercc_before, 
+          plot_ercc_after,
+          labels = LETTERS[3:4])</code></pre>
+<p><img src="figure/sampleqc.Rmd/convertion-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="pca" class="section level2">
+<h2>PCA</h2>
+<pre class="r"><code>## look at human genes
+sce_hs &lt;- sce_raw[rowData(sce_raw)$source == &quot;H. sapiens&quot;, ]
+head(colData(sce_hs))</code></pre>
+<pre><code>DataFrame with 6 rows and 44 columns
+             experiment        well cell_number concentration         ERCC
+              &lt;integer&gt; &lt;character&gt;   &lt;integer&gt;     &lt;numeric&gt;  &lt;character&gt;
+20170905-A01   20170905         A01           1   1.726404375 50x dilution
+20170905-A02   20170905         A02           1   1.445692561 50x dilution
+20170905-A03   20170905         A03           1   1.889617025 50x dilution
+20170905-A04   20170905         A04           1    0.47537227 50x dilution
+20170905-A05   20170905         A05           1   0.559682703 50x dilution
+20170905-A06   20170905         A06           1   2.135351839 50x dilution
+             individual.1 individual.2 image_individual image_label
+              &lt;character&gt;  &lt;character&gt;      &lt;character&gt;   &lt;integer&gt;
+20170905-A01      NA18855      NA18870      18870_18855           3
+20170905-A02      NA18855      NA18870      18870_18855           2
+20170905-A03      NA18855      NA18870      18870_18855           1
+20170905-A04      NA18855      NA18870      18870_18855          49
+20170905-A05      NA18855      NA18870      18870_18855          50
+20170905-A06      NA18855      NA18870      18870_18855          51
+                   raw       umi    mapped  unmapped reads_ercc  reads_hs
+             &lt;integer&gt; &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;  &lt;integer&gt; &lt;integer&gt;
+20170905-A01   5746265   3709414   2597589   1111825     161686   2435427
+20170905-A02   3997709   2642317   1799823    842494     253670   1545769
+20170905-A03   4765829   3301270   2274259   1027011     261145   2011561
+20170905-A04   1926305   1286653    806647    480006     247028    559614
+20170905-A05   2626155   1740464   1036933    703531     247831    788955
+20170905-A06   5249443   3662342   2631138   1031204     210518   2419498
+             reads_egfp reads_mcherry molecules  mol_ercc    mol_hs
+              &lt;integer&gt;     &lt;integer&gt; &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+20170905-A01        475             1    158546      3692    154830
+20170905-A02        379             5     88552      3648     84887
+20170905-A03       1550             3    107984      3820    104119
+20170905-A04          5             0     44772      3505     41262
+20170905-A05        145             2     64926      3505     61413
+20170905-A06       1118             4    134989      3664    131293
+              mol_egfp mol_mcherry detect_ercc detect_hs     chip_id
+             &lt;integer&gt;   &lt;integer&gt;   &lt;numeric&gt; &lt;numeric&gt; &lt;character&gt;
+20170905-A01        23           1          41      9018     NA18870
+20170905-A02        12           5          45      6848     NA18870
+20170905-A03        44           1          44      7228     NA18855
+20170905-A04         5           0          43      3653     NA18870
+20170905-A05         6           2          44      4704     NA18870
+20170905-A06        31           1          43      8198     NA18870
+               chipmix   freemix      snps     reads    avg_dp    min_dp
+             &lt;numeric&gt; &lt;numeric&gt; &lt;integer&gt; &lt;integer&gt; &lt;numeric&gt; &lt;integer&gt;
+20170905-A01   0.16693   0.05395    311848      9356      0.03         1
+20170905-A02   0.26917   0.13813    311848      4678      0.02         1
+20170905-A03   0.36964   0.07778    311848      6201      0.02         1
+20170905-A04    0.5132    0.2615    311848      1356         0         1
+20170905-A05   0.54431   0.21419    311848      1906      0.01         1
+20170905-A06   0.22935   0.08126    311848      7929      0.03         1
+             snps_w_min  valid_id cut_off_reads   unmapped_ratios
+              &lt;integer&gt; &lt;logical&gt;     &lt;logical&gt;         &lt;numeric&gt;
+20170905-A01       3961      TRUE          TRUE 0.299730631307263
+20170905-A02       2201      TRUE          TRUE 0.318846678880694
+20170905-A03       2550      TRUE          TRUE 0.311095729825188
+20170905-A04        857      TRUE         FALSE 0.373065620645193
+20170905-A05       1139      TRUE         FALSE 0.404220368821188
+20170905-A06       3190      TRUE          TRUE 0.281569553034643
+             cut_off_unmapped    ercc_percentage cut_off_ercc
+                    &lt;logical&gt;          &lt;numeric&gt;    &lt;logical&gt;
+20170905-A01             TRUE 0.0622446430131942         TRUE
+20170905-A02             TRUE  0.140941637038753         TRUE
+20170905-A03             TRUE  0.114826411591644         TRUE
+20170905-A04             TRUE  0.306240524045834        FALSE
+20170905-A05             TRUE  0.239003870066822        FALSE
+20170905-A06             TRUE 0.0800102465169064         TRUE
+             cut_off_genes    ercc_conversion         conversion
+                 &lt;logical&gt;          &lt;numeric&gt;          &lt;numeric&gt;
+20170905-A01          TRUE 0.0228343826923791 0.0635740672990814
+20170905-A02          TRUE  0.014380888555998 0.0549157086214046
+20170905-A03          TRUE 0.0146278887208256 0.0517602995882302
+20170905-A04         FALSE 0.0141886749680198 0.0737329659372353
+20170905-A05         FALSE 0.0141427020832745 0.0778409414985646
+20170905-A06          TRUE 0.0174046874851557 0.0542645623182991
+             conversion_outlier molecule_outlier filter_all
+                      &lt;logical&gt;        &lt;logical&gt;  &lt;logical&gt;
+20170905-A01              FALSE            FALSE       TRUE
+20170905-A02              FALSE            FALSE       TRUE
+20170905-A03              FALSE            FALSE       TRUE
+20170905-A04              FALSE            FALSE      FALSE
+20170905-A05              FALSE            FALSE      FALSE
+20170905-A06              FALSE            FALSE       TRUE</code></pre>
+<pre class="r"><code>## remove genes of all 0s
+sce_hs_clean &lt;- sce_hs[rowSums(assay(sce_hs)) != 0, ]
+dim(sce_hs_clean)</code></pre>
+<pre><code>[1] 19348  1536</code></pre>
+<pre class="r"><code>## convert to log2 cpm
+mol_hs_cpm &lt;- edgeR::cpm(assay(sce_hs_clean), log = TRUE)
+mol_hs_cpm_means &lt;- rowMeans(mol_hs_cpm)
+summary(mol_hs_cpm_means)</code></pre>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  5.412   5.431   5.634   5.987   6.210  13.007 </code></pre>
+<pre class="r"><code>mol_hs_cpm &lt;- mol_hs_cpm[mol_hs_cpm_means &gt; median(mol_hs_cpm_means), ]
+dim(mol_hs_cpm)</code></pre>
+<pre><code>[1] 9674 1536</code></pre>
+<pre class="r"><code>## pca of genes with reasonable expression levels
+source(&quot;code/utility.R&quot;)
+pca_hs &lt;- run_pca(mol_hs_cpm)
+
+plot_pca_id &lt;- plot_pca(pca_hs$PCs, pcx = 1, pcy = 2, explained = pca_hs$explained,
+         metadata = data.frame(colData(sce_hs_clean)), color = &quot;chip_id&quot;)
+plot_pca_id</code></pre>
+<p><img src="figure/sampleqc.Rmd/pca-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="filter" class="section level2">
+<h2>Filter</h2>
+<div id="final-list" class="section level3">
+<h3>Final list</h3>
+<pre class="r"><code>## all filter
+anno$filter_all &lt;- anno$cell_number == 1 &amp;
+                   anno$mol_egfp &gt; 0 &amp;
+                   anno$valid_id &amp;
+                   anno$cut_off_reads &amp;
+                   anno$cut_off_unmapped &amp;
+                   anno$cut_off_ercc &amp;
+                   anno$cut_off_genes &amp;
+                   anno$molecule_outlier == &quot;FALSE&quot; &amp;
+                   anno$conversion_outlier == &quot;FALSE&quot;
+sort(table(anno[anno$filter_all, &quot;chip_id&quot;]))</code></pre>
+<pre><code>
+NA18511 NA19160 NA19101 NA18855 NA19098 NA18870 
+    104     123     124     171     187     214 </code></pre>
+<pre class="r"><code>table(anno[anno$filter_all, c(&quot;experiment&quot;,&quot;chip_id&quot;)])</code></pre>
+<pre><code>          chip_id
+experiment NA18511 NA18855 NA18870 NA19098 NA19101 NA19160
+  20170905       0      37      32       0       0       0
+  20170906       0       0       0      41      22       0
+  20170907       0      29       0      23       0       0
+  20170908       0       0      32       0      31       0
+  20170910       0      30       0       0      24       0
+  20170912       0       0      42      37       0       0
+  20170913       0      41       0       0       0       9
+  20170914       0       0       0       0      24      34
+  20170915      24      34       0       0       0       0
+  20170916      13       0       0       0      23       0
+  20170917       0       0       0      40       0      12
+  20170919      11       0       0      46       0       0
+  20170920      39       0       0       0       0      18
+  20170921       0       0      45       0       0      22
+  20170922      17       0      25       0       0       0
+  20170924       0       0      38       0       0      28</code></pre>
+</div>
+<div id="plots" class="section level3">
+<h3>Plots</h3>
+<pre class="r"><code>genes_unmapped &lt;-  ggplot(anno,
+                   aes(x = detect_hs, y = unmapped_ratios * 100,
+                       col = as.factor(chip_id), 
+                       label = as.character(cell_number),
+                       height = 600, width = 2000)) +
+                   scale_colour_manual(values = indi_palette) +
+                   geom_text(fontface = 3, alpha = 0.5) + 
+                   geom_vline(xintercept = cut_off_genes, 
+                              colour=&quot;grey&quot;, linetype = &quot;longdash&quot;) +
+                   geom_hline(yintercept = cut_off_unmapped * 100, 
+                              colour=&quot;grey&quot;, linetype = &quot;longdash&quot;) +
+                   labs(x = &quot;Number of detected genes / sample&quot;, 
+                        y = &quot;Percentage of unmapped reads (%)&quot;) 
+
+genes_spike &lt;- ggplot(anno,
+               aes(x = detect_hs, y = ercc_percentage * 100,
+                   col = as.factor(chip_id), 
+                   label = as.character(cell_number), 
+                   height = 600, width = 2000)) +
+               scale_colour_manual(values = indi_palette) +
+               scale_shape_manual(values=c(1:10)) +
+               geom_text(fontface = 3, alpha = 0.5) + 
+               geom_vline(xintercept = cut_off_genes, 
+                          colour=&quot;grey&quot;, linetype = &quot;longdash&quot;) +
+               geom_hline(yintercept = cut_off_ercc * 100, 
+                          colour=&quot;grey&quot;, linetype = &quot;longdash&quot;) +
+               labs(x = &quot;Number of detected genes / samlpe&quot;, 
+                    y = &quot;Percentage of ERCC spike-in reads (%)&quot;) 
+
+reads_unmapped_num &lt;-  ggplot(anno,
+                       aes(x = mapped, y = unmapped_ratios * 100,
+                           col = as.factor(experiment), 
+                           label = as.character(cell_number), 
+                           height = 600, width = 2000)) +
+                       geom_text(fontface = 3, alpha = 0.5) + 
+                       geom_vline(xintercept = cut_off_reads, 
+                                  colour=&quot;grey&quot;, linetype = &quot;longdash&quot;) +
+                       geom_hline(yintercept = cut_off_unmapped * 100,
+                                  colour=&quot;grey&quot;, linetype = &quot;longdash&quot;) +
+                       labs(x = &quot;Total mapped reads / sample&quot;, 
+                            y = &quot;Percentage of unmapped reads (%)&quot;) 
+
+reads_spike_num &lt;- ggplot(anno,
+                   aes(x = mapped, y = ercc_percentage * 100,
+                       col = as.factor(experiment), 
+                       label = as.character(cell_number), 
+                       height = 600, width = 2000)) +
+                   geom_text(fontface = 3, alpha = 0.5) + 
+                   geom_vline(xintercept = cut_off_reads, 
+                              colour=&quot;grey&quot;, linetype = &quot;longdash&quot;) +
+                   geom_hline(yintercept = cut_off_ercc * 100, 
+                              colour=&quot;grey&quot;, linetype = &quot;longdash&quot;) +
+                   labs(x = &quot;Total mapped reads / sample&quot;,
+                        y = &quot;Percentage of ERCC spike-in reads (%)&quot;) 
+
+plot_grid(genes_unmapped + theme(legend.position = c(.7,.9)), 
+          genes_spike + theme(legend.position = &quot;none&quot;),
+          labels = letters[1:2])</code></pre>
+<p><img src="figure/sampleqc.Rmd/plots-1.png" width="3600" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_grid(reads_unmapped_num + theme(legend.position = c(.7,.9)), 
+          reads_spike_num + theme(legend.position = &quot;none&quot;),
+          labels = letters[3:4])</code></pre>
+<p><img src="figure/sampleqc.Rmd/plots-2.png" width="3600" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(anno, aes(x = mol_hs, y = detect_hs,
+                   col = as.factor(chip_id), 
+                   height = 600, width = 2000)) +
+               scale_colour_manual(values = indi_palette) +
+               scale_shape_manual(values=c(1:10)) +
+               geom_point(alpha = 0.6) + 
+               labs(col = &quot;Individual&quot;) +
+               theme(legend.position = c(.7,.5)) +
+               labs(x = &quot;Total molecule counts / samlpe&quot;, 
+                    y = &quot;Number of detected genes / sample&quot;) </code></pre>
+<p><img src="figure/sampleqc.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="session-information" class="section level2">
+<h2>Session information</h2>
+<pre><code>R version 3.5.1 (2018-07-02)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.4 (Nitrogen)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] parallel  stats4    stats     graphics  grDevices utils     datasets 
+[8] methods   base     
+
+other attached packages:
+ [1] testit_0.9                  SingleCellExperiment_1.4.1 
+ [3] SummarizedExperiment_1.12.0 DelayedArray_0.8.0         
+ [5] BiocParallel_1.16.0         matrixStats_0.55.0         
+ [7] Biobase_2.42.0              GenomicRanges_1.34.0       
+ [9] GenomeInfoDb_1.18.1         IRanges_2.16.0             
+[11] S4Vectors_0.20.1            BiocGenerics_0.28.0        
+[13] tibble_2.1.1                MASS_7.3-51.1              
+[15] edgeR_3.24.0                limma_3.38.3               
+[17] dplyr_0.8.0.1               cowplot_0.9.4              
+[19] ggplot2_3.2.1              
+
+loaded via a namespace (and not attached):
+ [1] tidyselect_0.2.5       locfit_1.5-9.1         purrr_0.3.2           
+ [4] lattice_0.20-38        colorspace_1.3-2       htmltools_0.3.6       
+ [7] yaml_2.2.0             rlang_0.4.0            later_0.7.5           
+[10] pillar_1.3.1           glue_1.3.0             withr_2.1.2           
+[13] RColorBrewer_1.1-2     GenomeInfoDbData_1.2.0 stringr_1.3.1         
+[16] zlibbioc_1.28.0        munsell_0.5.0          gtable_0.2.0          
+[19] workflowr_1.6.0        evaluate_0.12          labeling_0.3          
+[22] knitr_1.20             httpuv_1.4.5           Rcpp_1.0.3            
+[25] promises_1.0.1         scales_1.0.0           backports_1.1.2       
+[28] XVector_0.22.0         fs_1.3.1               digest_0.6.20         
+[31] stringi_1.2.4          grid_3.5.1             rprojroot_1.3-2       
+[34] tools_3.5.1            bitops_1.0-6           magrittr_1.5          
+[37] lazyeval_0.2.1         RCurl_1.95-4.11        crayon_1.3.4          
+[40] whisker_0.3-2          pkgconfig_2.0.3        Matrix_1.2-17         
+[43] assertthat_0.2.1       rmarkdown_1.10         R6_2.4.0              
+[46] git2r_0.26.1           compiler_3.5.1        </code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.5.1 (2018-07-02)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.4 (Nitrogen)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] parallel  stats4    stats     graphics  grDevices utils     datasets 
+[8] methods   base     
+
+other attached packages:
+ [1] testit_0.9                  SingleCellExperiment_1.4.1 
+ [3] SummarizedExperiment_1.12.0 DelayedArray_0.8.0         
+ [5] BiocParallel_1.16.0         matrixStats_0.55.0         
+ [7] Biobase_2.42.0              GenomicRanges_1.34.0       
+ [9] GenomeInfoDb_1.18.1         IRanges_2.16.0             
+[11] S4Vectors_0.20.1            BiocGenerics_0.28.0        
+[13] tibble_2.1.1                MASS_7.3-51.1              
+[15] edgeR_3.24.0                limma_3.38.3               
+[17] dplyr_0.8.0.1               cowplot_0.9.4              
+[19] ggplot2_3.2.1              
+
+loaded via a namespace (and not attached):
+ [1] tidyselect_0.2.5       locfit_1.5-9.1         purrr_0.3.2           
+ [4] lattice_0.20-38        colorspace_1.3-2       htmltools_0.3.6       
+ [7] yaml_2.2.0             rlang_0.4.0            later_0.7.5           
+[10] pillar_1.3.1           glue_1.3.0             withr_2.1.2           
+[13] RColorBrewer_1.1-2     GenomeInfoDbData_1.2.0 stringr_1.3.1         
+[16] zlibbioc_1.28.0        munsell_0.5.0          gtable_0.2.0          
+[19] workflowr_1.6.0        evaluate_0.12          labeling_0.3          
+[22] knitr_1.20             httpuv_1.4.5           Rcpp_1.0.3            
+[25] promises_1.0.1         scales_1.0.0           backports_1.1.2       
+[28] XVector_0.22.0         fs_1.3.1               digest_0.6.20         
+[31] stringi_1.2.4          grid_3.5.1             rprojroot_1.3-2       
+[34] tools_3.5.1            bitops_1.0-6           magrittr_1.5          
+[37] lazyeval_0.2.1         RCurl_1.95-4.11        crayon_1.3.4          
+[40] whisker_0.3-2          pkgconfig_2.0.3        Matrix_1.2-17         
+[43] assertthat_0.2.1       rmarkdown_1.10         R6_2.4.0              
+[46] git2r_0.26.1           compiler_3.5.1        </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
