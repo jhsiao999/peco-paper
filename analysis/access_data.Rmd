@@ -36,7 +36,7 @@ For scRNA-seq data:
 
 To create the final dataset for analysis:
 
-  * We [combined scRNA-seq with image intensity data](code/output-raw-2-final.R).
+  * We [combined scRNA-seq with image intensity data](https://github.com/jhsiao999/peco-paper/tree/master/code/output-raw-2-final.R).
 
 
 ## Downloading the data files
