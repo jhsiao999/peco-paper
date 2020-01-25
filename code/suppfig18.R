@@ -67,6 +67,165 @@ for (i in 1:6) {
 }
 
 
+# Cyclone
+inds <- c("NA19098","NA18511","NA18870","NA19101","NA18855","NA19160")
+labs <- c("CDK1", "UBE2C", "TOP2A", "HIST1H4E", "HIST1H4C")
+genes <- c("ENSG00000170312","ENSG00000175063",
+           "ENSG00000131747", "ENSG00000198518", "ENSG00000197061")
+pred_cyclone <- lapply(1:length(inds), function(i) {
+  res <- readRDS(paste0("data/ourdata_cyclone_", inds[i], ".rds"))
+  phase_pred <- res$phase_pred
+  names(phase_pred) <- rownames(res)
+  phase_ref <- pdata$theta[match(names(phase_pred), rownames(pdata))]
+  phase_pred_rot <- rotation(ref_var= phase_ref, shift_var = phase_pred)
+  fits <- lapply(1:5, function(g) {
+    gindex <- which(rownames(log2cpm_quant) == genes[g])
+    fit_g <- data.frame(
+      gexp=log2cpm_quant[gindex, match(names(phase_pred_rot), colnames(log2cpm_quant))],
+      phase=shift_origin(phase_pred_rot, origin = pi/2))
+    fit_g <- fit_g[order(fit_g$phase),]
+
+    fit_trend <- fit_trendfilter_generic(fit_g$gexp)
+    fit_g$trend.yy <- fit_trend$trend.yy
+    fun_g <- approxfun(x=as.numeric(fit_g$phase),
+                       y=as.numeric(fit_g$trend.yy), rule=2)
+    fit_out <- list(fit_g=fit_g,
+                    fun_g = fun_g)
+    return(fit_out)
+  })
+  names(fits) <- labs
+  return(fits)
+})
+names(pred_cyclone) <- inds
+
+par(mfrow=c(6,5), mar=c(2,2,2,1))
+for (i in 1:6) {
+  res <- pred_cyclone[[i]]
+  ind <- names(pred_cyclone)[i]
+  for (g in 1:5) {
+    if (g>1) { ylab <- ""} else { ylab <- "Quantile-normalized expression level"}
+    res_g <- res[[g]]
+    plot(x= res_g$fit_g$phase,
+         y = res_g$fit_g$gexp, pch = 16, cex=.5, ylab=ylab,
+         xlab="Predicted phase",
+         main = names(res)[g], axes=F, ylim=c(-3,3))
+    abline(h=0, lwd=.5)
+    lines(x = seq(0, 2*pi, length.out=200),
+          y = res_g$fun_g(seq(0, 2*pi, length.out=200)),
+          col = wesanderson::wes_palette("FantasticFox1")[2], lty=1, lwd=2)
+    axis(2); axis(1,at=c(0,pi/2, pi, 3*pi/2, 2*pi),
+                  labels=c(0,expression(pi/2), expression(pi), expression(3*pi/2),
+                           expression(2*pi)))
+  }
+}
+
+
+# Seurat
+inds <- c("NA19098","NA18511","NA18870","NA19101","NA18855","NA19160")
+labs <- c("CDK1", "UBE2C", "TOP2A", "HIST1H4E", "HIST1H4C")
+genes <- c("ENSG00000170312","ENSG00000175063",
+           "ENSG00000131747", "ENSG00000198518", "ENSG00000197061")
+diff_seurat <- readRDS(file="data/fit_diff_seurat.rds")
+
+pred_seurat <- lapply(1:length(inds), function(i) {
+  out <- diff_seurat[diff_seurat$ind==inds[i],c("phase_ref", "phase_pred_rot")]
+  fits <- lapply(1:5, function(g) {
+    gindex <- which(rownames(log2cpm_quant) == genes[g])
+    fit_g <- data.frame(
+      gexp=log2cpm_quant[gindex, match(rownames(out), colnames(log2cpm_quant))],
+      phase=shift_origin(2*pi-out$phase_pred_rot, pi/3))
+    fit_g <- fit_g[order(fit_g$phase),]
+
+    fit_trend <- fit_trendfilter_generic(fit_g$gexp)
+    fit_g$trend.yy <- fit_trend$trend.yy
+    fun_g <- approxfun(x=as.numeric(fit_g$phase),
+                       y=as.numeric(fit_g$trend.yy), rule=2)
+    fit_out <- list(fit_g=fit_g,
+                    fun_g = fun_g)
+    return(fit_out)
+  })
+  names(fits) <- labs
+  return(fits)
+})
+names(pred_seurat) <- inds
+
+par(mfrow=c(6,5), mar=c(2,2,2,1))
+for (i in 1:6) {
+  res <- pred_seurat[[i]]
+  ind <- names(pred_seurat)[i]
+  for (g in 1:5) {
+    if (g>1) { ylab <- ""} else { ylab <- "Quantile-normalized expression level"}
+    res_g <- res[[g]]
+    plot(x= res_g$fit_g$phase,
+         y = res_g$fit_g$gexp, pch = 16, cex=.5, ylab=ylab,
+         xlab="Predicted phase",
+         main = names(res)[g], axes=F, ylim=c(-3,3))
+    lines(x = seq(0, 2*pi, length.out=200),
+          y = res_g$fun_g(seq(0, 2*pi, length.out=200)),
+          col = wesanderson::wes_palette("FantasticFox1")[3], lty=1, lwd=2)
+    axis(2); axis(1,at=c(0,pi/2, pi, 3*pi/2, 2*pi),
+                  labels=c(0,expression(pi/2), expression(pi), expression(3*pi/2),
+                           expression(2*pi)))
+  }
+}
+
+
+
+
+# Oscope cyclic expression patterns
+inds <- c("NA19098","NA18511","NA18870","NA19101","NA18855","NA19160")
+labs <- c("CDK1", "UBE2C", "TOP2A", "HIST1H4E", "HIST1H4C")
+genes <- c("ENSG00000170312","ENSG00000175063",
+           "ENSG00000131747", "ENSG00000198518", "ENSG00000197061")
+
+load("data/ourdata_oscope_366genes.rda")
+
+pred_oscope <- lapply(1:length(inds), function(i) {
+  out_oscope_sub <- out_oscope[out_oscope$ind == inds[i],]
+  fits <- lapply(1:5, function(g) {
+    gindex <- which(rownames(log2cpm_quant) == genes[g])
+    fit_g <- data.frame(
+      gexp=log2cpm_quant[gindex, match(rownames(out_oscope_sub), colnames(log2cpm_quant))],
+      phase=shift_origin(2*pi-out_oscope_sub$phase_pred_rot, origin=3*pi/4))
+    fit_g <- fit_g[order(fit_g$phase),]
+
+    fit_trend <- fit_trendfilter_generic(fit_g$gexp)
+    fit_g$trend.yy <- fit_trend$trend.yy
+    fun_g <- approxfun(x=as.numeric(fit_g$phase),
+                       y=as.numeric(fit_g$trend.yy), rule=2)
+    fit_out <- list(fit_g=fit_g,
+                    fun_g = fun_g)
+    return(fit_out)
+  })
+  names(fits) <- labs
+  return(fits)
+})
+names(pred_oscope) <- inds
+
+par(mfrow=c(6,5), mar=c(2,2,2,1))
+for (i in 1:6) {
+  res <- pred_oscope[[i]]
+  print(inds[i])
+  for (g in 1:5) {
+    if (g>1) { ylab <- ""} else { ylab <- "Quantile-normalized expression level"}
+    res_g <- res[[g]]
+    plot(x= res_g$fit_g$phase,
+         y = res_g$fit_g$gexp, pch = 16, cex=.5, ylab=ylab,
+         xlab="Predicted phase",
+         main = names(res)[g], axes=F, ylim=c(-3,3))
+    abline(h=0, lwd=.5)
+    lines(x = seq(0, 2*pi, length.out=200),
+          y = res_g$fun_g(seq(0, 2*pi, length.out=200)),
+          col = wesanderson::wes_palette("Darjeeling2")[2], lty=1, lwd=2)
+    axis(2); axis(1,at=c(0,pi/2, pi, 3*pi/2, 2*pi),
+                  labels=c(0,expression(pi/2), expression(pi), expression(3*pi/2),
+                           expression(2*pi)))
+  }
+}
+
+
+
+
 # recat
 labs <- c("CDK1", "UBE2C", "TOP2A", "HIST1H4E", "HIST1H4C")
 genes <- c("ENSG00000170312","ENSG00000175063",
@@ -131,159 +290,5 @@ for (i in 1:6) {
 
 
 
-# Oscope cyclic expression patterns
-inds <- c("NA19098","NA18511","NA18870","NA19101","NA18855","NA19160")
-labs <- c("CDK1", "UBE2C", "TOP2A", "HIST1H4E", "HIST1H4C")
-genes <- c("ENSG00000170312","ENSG00000175063",
-           "ENSG00000131747", "ENSG00000198518", "ENSG00000197061")
 
-load("data/ourdata_oscope_366genes.rda")
-
-pred_oscope <- lapply(1:length(inds), function(i) {
-  out_oscope_sub <- out_oscope[out_oscope$ind == inds[i],]
-  fits <- lapply(1:5, function(g) {
-    gindex <- which(rownames(log2cpm_quant) == genes[g])
-    fit_g <- data.frame(
-      gexp=log2cpm_quant[gindex, match(rownames(out_oscope_sub), colnames(log2cpm_quant))],
-      phase=shift_origin(2*pi-out_oscope_sub$phase_pred_rot, origin=3*pi/4))
-    fit_g <- fit_g[order(fit_g$phase),]
-
-    fit_trend <- fit_trendfilter_generic(fit_g$gexp)
-    fit_g$trend.yy <- fit_trend$trend.yy
-    fun_g <- approxfun(x=as.numeric(fit_g$phase),
-                       y=as.numeric(fit_g$trend.yy), rule=2)
-    fit_out <- list(fit_g=fit_g,
-                    fun_g = fun_g)
-    return(fit_out)
-  })
-  names(fits) <- labs
-  return(fits)
-})
-names(pred_oscope) <- inds
-
-par(mfrow=c(6,5), mar=c(2,2,2,1))
-for (i in 1:6) {
-  res <- pred_oscope[[i]]
-  print(inds[i])
-  for (g in 1:5) {
-    if (g>1) { ylab <- ""} else { ylab <- "Quantile-normalized expression level"}
-    res_g <- res[[g]]
-    plot(x= res_g$fit_g$phase,
-         y = res_g$fit_g$gexp, pch = 16, cex=.5, ylab=ylab,
-         xlab="Predicted phase",
-         main = names(res)[g], axes=F, ylim=c(-3,3))
-    abline(h=0, lwd=.5)
-    lines(x = seq(0, 2*pi, length.out=200),
-          y = res_g$fun_g(seq(0, 2*pi, length.out=200)),
-          col = wesanderson::wes_palette("Darjeeling2")[2], lty=1, lwd=2)
-    axis(2); axis(1,at=c(0,pi/2, pi, 3*pi/2, 2*pi),
-                  labels=c(0,expression(pi/2), expression(pi), expression(3*pi/2),
-                           expression(2*pi)))
-  }
-}
-
-
-# Cyclone
-inds <- c("NA19098","NA18511","NA18870","NA19101","NA18855","NA19160")
-labs <- c("CDK1", "UBE2C", "TOP2A", "HIST1H4E", "HIST1H4C")
-genes <- c("ENSG00000170312","ENSG00000175063",
-           "ENSG00000131747", "ENSG00000198518", "ENSG00000197061")
-pred_cyclone <- lapply(1:length(inds), function(i) {
-  res <- readRDS(paste0("data/ourdata_cyclone_", inds[i], ".rds"))
-  phase_pred <- res$phase_pred
-  names(phase_pred) <- rownames(res)
-  phase_ref <- pdata$theta[match(names(phase_pred), rownames(pdata))]
-  phase_pred_rot <- rotation(ref_var= phase_ref, shift_var = phase_pred)
-  fits <- lapply(1:5, function(g) {
-    gindex <- which(rownames(log2cpm_quant) == genes[g])
-    fit_g <- data.frame(
-      gexp=log2cpm_quant[gindex, match(names(phase_pred_rot), colnames(log2cpm_quant))],
-      phase=shift_origin(phase_pred_rot, origin = pi/2))
-    fit_g <- fit_g[order(fit_g$phase),]
-
-    fit_trend <- fit_trendfilter_generic(fit_g$gexp)
-    fit_g$trend.yy <- fit_trend$trend.yy
-    fun_g <- approxfun(x=as.numeric(fit_g$phase),
-                       y=as.numeric(fit_g$trend.yy), rule=2)
-    fit_out <- list(fit_g=fit_g,
-                    fun_g = fun_g)
-    return(fit_out)
-  })
-  names(fits) <- labs
-  return(fits)
-})
-names(pred_cyclone) <- inds
-
-par(mfrow=c(6,5), mar=c(2,2,2,1))
-for (i in 1:6) {
-  res <- pred_cyclone[[i]]
-  ind <- names(pred_cyclone)[i]
-  for (g in 1:5) {
-    if (g>1) { ylab <- ""} else { ylab <- "Quantile-normalized expression level"}
-    res_g <- res[[g]]
-    plot(x= res_g$fit_g$phase,
-         y = res_g$fit_g$gexp, pch = 16, cex=.5, ylab=ylab,
-         xlab="Predicted phase",
-         main = names(res)[g], axes=F, ylim=c(-3,3))
-    abline(h=0, lwd=.5)
-    lines(x = seq(0, 2*pi, length.out=200),
-          y = res_g$fun_g(seq(0, 2*pi, length.out=200)),
-          col = wesanderson::wes_palette("FantasticFox1")[2], lty=1, lwd=2)
-    axis(2); axis(1,at=c(0,pi/2, pi, 3*pi/2, 2*pi),
-                  labels=c(0,expression(pi/2), expression(pi), expression(3*pi/2),
-                           expression(2*pi)))
-  }
-}
-
-
-
-
-# Seurat
-inds <- c("NA19098","NA18511","NA18870","NA19101","NA18855","NA19160")
-labs <- c("CDK1", "UBE2C", "TOP2A", "HIST1H4E", "HIST1H4C")
-genes <- c("ENSG00000170312","ENSG00000175063",
-           "ENSG00000131747", "ENSG00000198518", "ENSG00000197061")
-diff_seurat <- readRDS(file="data/fit_diff_seurat.rds")
-
-pred_seurat <- lapply(1:length(inds), function(i) {
-  out <- diff_seurat[diff_seurat$ind==inds[i],c("phase_ref", "phase_pred_rot")]
-  fits <- lapply(1:5, function(g) {
-    gindex <- which(rownames(log2cpm_quant) == genes[g])
-    fit_g <- data.frame(
-      gexp=log2cpm_quant[gindex, match(rownames(out), colnames(log2cpm_quant))],
-      phase=shift_origin(2*pi-out$phase_pred_rot, pi/3))
-    fit_g <- fit_g[order(fit_g$phase),]
-
-    fit_trend <- fit_trendfilter_generic(fit_g$gexp)
-    fit_g$trend.yy <- fit_trend$trend.yy
-    fun_g <- approxfun(x=as.numeric(fit_g$phase),
-                       y=as.numeric(fit_g$trend.yy), rule=2)
-    fit_out <- list(fit_g=fit_g,
-                    fun_g = fun_g)
-    return(fit_out)
-  })
-  names(fits) <- labs
-  return(fits)
-})
-names(pred_seurat) <- inds
-
-par(mfrow=c(6,5), mar=c(2,2,2,1))
-for (i in 1:6) {
-  res <- pred_seurat[[i]]
-  ind <- names(pred_seurat)[i]
-  for (g in 1:5) {
-    if (g>1) { ylab <- ""} else { ylab <- "Quantile-normalized expression level"}
-    res_g <- res[[g]]
-    plot(x= res_g$fit_g$phase,
-         y = res_g$fit_g$gexp, pch = 16, cex=.5, ylab=ylab,
-         xlab="Predicted phase",
-         main = names(res)[g], axes=F, ylim=c(-3,3))
-    lines(x = seq(0, 2*pi, length.out=200),
-          y = res_g$fun_g(seq(0, 2*pi, length.out=200)),
-          col = wesanderson::wes_palette("FantasticFox1")[3], lty=1, lwd=2)
-    axis(2); axis(1,at=c(0,pi/2, pi, 3*pi/2, 2*pi),
-                  labels=c(0,expression(pi/2), expression(pi), expression(3*pi/2),
-                           expression(2*pi)))
-  }
-}
 
