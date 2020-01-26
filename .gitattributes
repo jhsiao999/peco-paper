@@ -5,3 +5,4 @@ data/fit_diff_cyclone.rds filter=lfs diff=lfs merge=lfs -text
 data/fit_diff_recat.rds filter=lfs diff=lfs merge=lfs -text
 data/fit_diff_peco.rds filter=lfs diff=lfs merge=lfs -text
 data/fit_diff_seurat.rds filter=lfs diff=lfs merge=lfs -text
+data/fit_diff_oscope.rds filter=lfs diff=lfs merge=lfs -text
