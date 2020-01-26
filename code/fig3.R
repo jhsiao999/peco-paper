@@ -1,5 +1,8 @@
-# Figure 3
-# Inferring cell cycle phase from scRNA-seq data
+# Figure 3: Inferring cell cycle phase form scRNA-seq data
+
+# Notes
+#   - For details of how we applied each method, estimated cyclic trends and
+#     computed prediction error, see https://jhsiao999.github.io/peco-paper/eval_on_our_data.html
 
 
 library(SingleCellExperiment)
@@ -79,7 +82,13 @@ makedata_supervised <- function(sce, log2cpm_quant,
 }
 makedata_supervised(sce, log2cpm_quant, theta)
 
-# see X for how we estimate cyclic function of gene expression levels for each gene
+
+# compute prediction error based on 2 to 50 genes
+
+# Note:
+#   - For details of how we estimated cyclic trend of gene expression levels for each gene.
+#     See https://jhsiao999.github.io/peco-paper/npreg_trendfilter_quantile.html. This file
+#     makes "data/fit.quant.rds"
 fits_all <- readRDS("data/fit.quant.rds")
 genes_all <- names(fits_all)[order(sapply(fits_all,"[[",3), decreasing=T)]
 
@@ -139,6 +148,8 @@ res_unthinned %>% group_by(ind, ngenes) %>%
 
 
 # Figure 3B. Prediction error in the test data
+# For details of our computations of prediction error of each method, see
+# https://jhsiao999.github.io/peco-paper/eval_on_our_data.html
 diff_cyclone <- readRDS("data/fit_diff_cyclone.rds")
 diff_recat <- readRDS("data/fit_diff_recat.rds")
 diff_peco <- readRDS("data/fit_diff_peco.rds")
@@ -187,7 +198,7 @@ diff_all %>% dplyr::filter(method %in% c("peco", "Oscope", "reCAT")) %>%
 
 
 # Supp Fig 3C
-# Estimated cyclic trend of top 5 cyclic genes in samples from cell line NA18511
+
 sce <- readRDS("data/sce-final.rds")
 sce <- sce[grep("ENSG", rownames(sce)),]
 fdata <- data.frame(colData(sce))
@@ -223,7 +234,10 @@ pred_peco <- lapply(1:length(inds), function(i) {
 })
 names(pred_peco) <- inds
 
+
 # Oscope
+# For details of how we applied Oscope and estimated cyclic trends based
+# on these two methods, see https://jhsiao999.github.io/peco-paper/eval_on_our_data.html
 load("data/ourdata_oscope_366genes.rda")
 
 pred_oscope <- lapply(1:length(inds), function(i) {
@@ -249,6 +263,8 @@ pred_oscope <- lapply(1:length(inds), function(i) {
 names(pred_oscope) <- inds
 
 # recat
+# For details of how we applied Oscope and estimated cyclic trends based
+# on these two methods, see https://jhsiao999.github.io/peco-paper/eval_on_our_data.html
 load("data/ourdata_recat.rda")
 samples_ordered <- rownames(test_exp)[ordIndex]
 phase_pred <- seq(0, 2*pi, length.out= length(ordIndex))
