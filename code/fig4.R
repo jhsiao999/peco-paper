@@ -1,7 +1,8 @@
 # Figure 4 Applying peco and existing tools to data from Leng et al. 2015
 #
 # Notes:
-#   - See eval_on_leng2015_data.html for details
+#   - For details of how we applied each method,
+#     see https://jhsiao999.github.io/peco-paper/eval_on_leng2015_data.html.
 
 
 # Load packages
@@ -256,11 +257,12 @@ title("reCAT prediction results", outer = TRUE, line = .5)
 
 # Figure 4C, Seurat and Cyclone results
 
-# run Cyclone
-
+# run Seurat
 library(Seurat)
-cc.genes <- readLines(con = "data//regev_lab_cell_cycle_genes.txt")
+# we followed Seurat vignette to compute Seurat-based cell-cycle phage
+# https://satijalab.org/seurat/v2.4/cell_cycle_vignette.html
 
+cc.genes <- readLines(con = "data/regev_lab_cell_cycle_genes.txt")
 obj <- CreateSeuratObject(counts = counts_fucci)
 obj <- NormalizeData(obj)
 obj <- FindVariableFeatures(obj, selection.method = "vst")
@@ -276,8 +278,8 @@ out_seurat$gates <- pdata_fucci$cell_state[match(rownames(out_seurat),
                                                  rownames(pdata_fucci))]
 table(out_seurat$gates, out_seurat$Phase)
 
-# run Cyclone
 
+# run Cyclone
 library(scran)
 hs.pairs <- readRDS(system.file("exdata", "human_cycle_markers.rds", package="scran"))
 
