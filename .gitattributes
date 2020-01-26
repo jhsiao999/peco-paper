@@ -10,3 +10,4 @@ data/ourdata_peco_NA18511_* filter=lfs diff=lfs merge=lfs -text
 data/ourdata_peco_*_top005genes.rds filter=lfs diff=lfs merge=lfs -text
 data/ourdata_oscope_366genes.rda filter=lfs diff=lfs merge=lfs -text
 data/ourdata_recat.rda filter=lfs diff=lfs merge=lfs -text
+data/leng2015_data.rds filter=lfs diff=lfs merge=lfs -text
