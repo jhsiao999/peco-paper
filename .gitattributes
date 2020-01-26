@@ -16,3 +16,4 @@ data/leng_fucci_oscope_29genes.rda filter=lfs diff=lfs merge=lfs -text
 data/leng_fucci_recat.rda filter=lfs diff=lfs merge=lfs -text
 data/regev_lab_cell_cycle_genes.txt filter=lfs diff=lfs merge=lfs -text
 data/leng_geneinfo.txt filter=lfs diff=lfs merge=lfs -text
+data/sce-filtered.rds filter=lfs diff=lfs merge=lfs -text
