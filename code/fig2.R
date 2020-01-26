@@ -1,11 +1,14 @@
 # Figure 2
-# Characterizing cell cycle phase using FUCCI fluorescence intensities.
+#   Characterizing cell cycle phase using FUCCI fluorescence intensities.
 
 
-ssce <- readRDS("data/sce-final.rds")
+sce <- readRDS("data/sce-final.rds")
+sce <- sce[grep("ENSG", rownames(sce)),]
+pdata <- data.frame(colData(sce))
+fdata <- data.frame(rowData(sce))
 
-
-
+sce <- data_transform_quantile(sce)
+log2cpm_quantNormed <- assay(sce, "cpm_quantNormed")
 
 # Fig 2A. Derive FUCCI-based cell cycle phase
 ints <- data.frame(rfp=colData(sce)$rfp.median.log10sum.adjust,
@@ -62,16 +65,20 @@ abline(v=c(b1,b2,b3), lty=2)
 
 
 # Fig 2C. FUCCI phase summarizes fluorescent intensities
-# get top 5 cyclic genes
+# Note:
+#   - For details of how we estimated cyclic trend of gene expression levels for each gene.
+#     See https://jhsiao999.github.io/peco-paper/npreg_trendfilter_quantile.html. This file
+#     makes "data/fit.quant.rds"
 fits_all <- readRDS("data/fit.quant.rds")
+
+# get top 5 cyclic genes
 pve_all <- sapply(fits_all, "[[", 3)
 pve_all_ord <- pve_all[order(pve_all, decreasing = T)]
-genes <- names(pve_all_ord)[1:5]
-labs <- c("CDK1", "UBE2C", "TOP2A", "HIST1H4E", "HIST1H4C")
+gene_ensg <- names(pve_all_ord)[1:5]
+gene_symbol <- c("CDK1", "UBE2C", "TOP2A", "HIST1H4E", "HIST1H4C")
 
-data_quant <- readRDS("data/log2cpm.quant.rds")
 sample_ord <- rownames(colData(sce))[order(theta_final)]
-data_quant_ord <- data_quant[,match(sample_ord,colnames(data_quant))]
+data_quant_ord <- log2cpm_quantNormed[,match(sample_ord,colnames(log2cpm_quantNormed))]
 fits_tmp <- lapply(1:5, function(i) {
   ii <- which(rownames(data_quant_ord)==genes[i])
   fit_g <- fit_trendfilter_generic(data_quant_ord[ii,])
@@ -79,17 +86,17 @@ fits_tmp <- lapply(1:5, function(i) {
                      y=as.numeric(fit_g$trend.yy), rule=2)
   return(fun_g)
 })
-names(fits_tmp) <- genes
+names(fits_tmp) <- gene_ensg
 
 par(mfrow=c(1,5), mar=c(2,2,2,1))
 for (i in 1:5) {
   plot(x=theta_final[order(theta_final)],
-       y=data_quant_ord[rownames(data_quant_ord)==genes[i],], col="gray50",
+       y=data_quant_ord[rownames(data_quant_ord)==gene_ensg[i],], col="gray50",
        xlab="FUCCI phase",
        ylab="", axes=F, cex=.3, pch=16,
-       main = labs[i])
+       main = gene_symbol[i])
   lines(x = seq(0, 2*pi, length.out=200),
-        y = fits_tmp[[which(names(fits_tmp) == genes[i])]](seq(0, 2*pi, length.out=200)),
+        y = fits_tmp[[which(names(fits_tmp) == gene_ensg[i])]](seq(0, 2*pi, length.out=200)),
         col=wesanderson::wes_palette("FantasticFox1")[1], lty=1, lwd=2)
   axis(2);
   axis(1,at=c(0,pi/2,pi,3*pi/2,2*pi), labels=c(0,expression(pi/2), expression(pi),
