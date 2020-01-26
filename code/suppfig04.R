@@ -5,9 +5,9 @@ library(ggplot2)
 library(cowplot)
 
 sce <- readRDS("data/sce-final.rds")
+sce <- sce[grep("ENSG", rownames(sce)), ]
 
 counts <- assay(sce)
-counts <- counts[grep("ENSG", rownames(counts)), ]
 pdata <- data.frame(colData(sce))
 
 log2cpm.all <- t(log2(1+(10^6)*(t(counts)/pdata$molecules)))
