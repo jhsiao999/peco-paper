@@ -1,10 +1,10 @@
-# Supplemental Figure 17
+# Supplemental Figure 17:
+#   Comparison with existing methods on our data
 #
-# Comparison with existing methods on our data
-# focusing on continuous cell cycle phase prediction
-#
-# For details of how we derive predicted cell cycle phase in each method,
-# please refer to eval_on_our_data.html.
+# Note:
+#   - Report continuous cell cycle phase prediction
+#   - Please refer to eval_on_our_data.html for details of how we computed
+#     predicted cell cycle phase in each method, and computed prediction error.
 
 
 library(SingleCellExperiment)
@@ -12,11 +12,15 @@ library(peco)
 library(ggplot2)
 library(wesanderson)
 
-diff_cyclone <- readRDS(file=file.path(dir, "analysis/revision/output/fit_diff_cyclone.rds"))
-diff_recat <- readRDS(file=file.path(dir, "analysis/revision/output/fit_diff_recat.rds"))
-diff_peco <- readRDS(file=file.path(dir, "analysis/revision/output/fit_diff_peco.rds"))
-diff_seurat <- readRDS(file=file.path(dir, "analysis/revision/output/fit_diff_seurat.rds"))
-diff_oscope <- readRDS(file=file.path(dir, "analysis/revision/output/fit_diff_oscope.rds"))
+
+
+
+# Supp Fig 17B
+diff_cyclone <- readRDS("data/fit_diff_cyclone.rds")
+diff_recat <- readRDS("data/fit_diff_recat.rds")
+diff_peco <- readRDS("data/fit_diff_peco.rds")
+diff_seurat <- readRDS("data/fit_diff_seurat.rds")
+diff_oscope <- readRDS("data/fit_diff_oscope.rds")
 
 diff_peco %>% group_by(ind) %>% summarise(mn=mean(diff_time)/2/pi,
                                           sd=sd(diff_time/2/pi)/sqrt(sum(phase_pred_rot>0)))
@@ -34,9 +38,6 @@ diff_all <- rbind(diff_recat,
                   diff_peco,
                   diff_seurat,
                   diff_oscope)
-
-
-# Supp Fig 17B
 cols_method <- c(wes_palette("FantasticFox1")[1:3],
                  wes_palette("Darjeeling1")[2],
                  wes_palette("FantasticFox1")[5])
