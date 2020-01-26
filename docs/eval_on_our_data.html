@@ -340,7 +340,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-01-25
+<strong>Last updated:</strong> 2020-01-26
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -431,10 +431,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertree2a13ee4b4e4dac6ee4b2cc46657f3ad9fe19ea84targetblank2a13ee4a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jhsiao999/peco-paper/tree/2a13ee4b4e4dac6ee4b2cc46657f3ad9fe19ea84" target="_blank">2a13ee4</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertreec9afbb3b6e39dd5ca7645334fc6a6e87852b5d17targetblankc9afbb3a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jhsiao999/peco-paper/tree/c9afbb3b6e39dd5ca7645334fc6a6e87852b5d17" target="_blank">c9afbb3</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertree2a13ee4b4e4dac6ee4b2cc46657f3ad9fe19ea84targetblank2a13ee4a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertreec9afbb3b6e39dd5ca7645334fc6a6e87852b5d17targetblankc9afbb3a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -445,9 +445,8 @@ Ignored files:
     Ignored:    .Rproj.user/
 
 Untracked files:
+    Untracked:  analysis/eval_on_leng2015_data.Rmd
     Untracked:  analysis/npreg_trendfilter_quantile.Rmd
-    Untracked:  code/suppfig09_?.R
-    Untracked:  code/suppfig16.R
     Untracked:  data/HumanLengESC.rds
     Untracked:  data/data_training_test/
     Untracked:  data/eset-filtered.rds
@@ -459,8 +458,13 @@ Untracked files:
     Untracked:  data/fit_diff_recat.rds
     Untracked:  data/fit_diff_seurat.rds
     Untracked:  data/intensity.rds
+    Untracked:  data/leng2015_data.rds
+    Untracked:  data/leng_fucci_oscope_29genes.rda
+    Untracked:  data/leng_fucci_recat.rda
+    Untracked:  data/leng_geneinfo.txt
     Untracked:  data/log2cpm.quant.rds
     Untracked:  data/macosko-2015.rds
+    Untracked:  data/nmeth.3549-S2.xlsx
     Untracked:  data/ourdata_cyclone_NA18511.rds
     Untracked:  data/ourdata_cyclone_NA18855.rds
     Untracked:  data/ourdata_cyclone_NA18870.rds
@@ -481,11 +485,7 @@ Untracked files:
 
 Unstaged changes:
     Modified:   analysis/index.Rmd
-    Modified:   code/fig2.R
-    Modified:   code/fig3.R
-    Modified:   code/fig4.R
-    Modified:   code/suppfig11.R
-    Modified:   code/suppfig18.R
+    Modified:   code/run_seurat.R
 
 </code></pre>
 <p>
@@ -524,6 +524,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jhsiao999/peco-paper/blob/c9afbb3b6e39dd5ca7645334fc6a6e87852b5d17/analysis/eval_on_our_data.Rmd" target="_blank">c9afbb3</a>
+</td>
+<td>
+jhsiao999
+</td>
+<td>
+2020-01-26
+</td>
+<td>
+minor edits
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jhsiao999/peco-paper/958a49abd236ccb1340833040e750f33ab380be5/docs/eval_on_our_data.html" target="_blank">958a49a</a>
+</td>
+<td>
+jhsiao999
+</td>
+<td>
+2020-01-25
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -688,6 +722,9 @@ diff_peco &lt;- do.call(rbind, lapply(1:length(inds), function(i) {
                     ind = as.character(ind),
                     method = &quot;peco&quot;))
 }))
+diff_peco$ind = factor(diff_peco$ind, 
+                       levels = c(&quot;NA18511&quot;, &quot;NA18855&quot;, &quot;NA18870&quot;, 
+                                  &quot;NA19098&quot;, &quot;NA19101&quot;, &quot;NA19160&quot;))
 saveRDS(diff_peco, file=(&quot;data/fit_diff_peco.rds&quot;))
 
 diff_peco %&gt;% group_by(ind) %&gt;% summarise(mn=mean(diff_time)/2/pi,
