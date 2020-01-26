@@ -1,4 +1,5 @@
 # Supplemental Figure 7
+#   FUCCI scores for the sixteen C1 plates before and after correcting for C1 plate effect.
 library(ggplot2)
 library(RColorBrewer)
 library(cowplot)
