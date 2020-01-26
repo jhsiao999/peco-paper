@@ -1,4 +1,5 @@
 # Supplemental Figure 6
+#   FUCCI and DAPI intensity before C1 plate effect correction of the 888 samples in the data.
 
 library(SingleCellExperiment)
 library(circular)
