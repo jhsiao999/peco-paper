@@ -6,8 +6,13 @@ library(peco)
 library(cluster)
 library(ggplot2)
 
-sce = readRDS("data/sce-final.rds")
-pdata = data.frame(colData(sce))
+sce <- readRDS("data/sce-final.rds")
+sce <- sce[grep("ENSG", rownames(sce)),]
+pdata <- data.frame(colData(sce))
+fdata <- data.frame(rowData(sce))
+
+sce <- data_transform_quantile(sce)
+log2cpm_quantNormed <- assay(sce, "cpm_quantNormed")
 
 # Figure S9A: PAM-based classification and FUCCI scores
 
@@ -56,9 +61,8 @@ for (i in 1:3) {
 # PAM-based gene classification vs Whitfield et al. 2012 classification
 
 # check all cell cycle phase markers in Whitfield et al.
-data_quant <- readRDS("data/log2cpm.quant.rds")
 sample_ord <- rownames(pdata)[order(theta_final)]
-data_quant_ord <- data_quant[,match(sample_ord,colnames(data_quant))]
+data_quant_ord <- log2cpm_quantNormed[,match(sample_ord,colnames(log2cpm_quantNormed))]
 
 # import the list of cell cycle genes in Whitfeld et al. 2012 (10.1091/mbc.02-02-0030)
 # the Whitfeld et al. 2012 list is annotated and reported in Macosko et al. 2015
@@ -83,12 +87,6 @@ subdata_plot$max_state = factor(subdata_plot$max_state,
                                 labels=c("G1", "S", "G2M"))
 macosko_sub = macosko[match(subdata_plot$ensembl, macosko$ensembl),]
 table(subdata_plot$max_state, macosko_sub$phase)
-
-# top100 = rownames(data_quant_ord)[order(rowVars(data_quant_ord),
-#                                         decreasing = TRUE)][1:500]
-
-# table(subdata_plot[as.character(subdata_plot$ensembl) %in% top100,]$max_state,
-#       macosko_sub[as.character(macosko_sub$ensembl) %in% top100,]$phase)
 
 table(subdata_plot$max_state,
       macosko_sub$phase)
