@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Comparison of performances on our data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">peco-paper</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/jhsiao999/peco-paper">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Comparison of performances on our data</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-01-25
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>peco-paper/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.0). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20190814code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20190814)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20190814code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20190814)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertreefdebe2b2616609fa8a118020a75fdc26fac2067dtargetblankfdebe2ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jhsiao999/peco-paper/tree/fdebe2b2616609fa8a118020a75fdc26fac2067d" target="_blank">fdebe2b</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertreefdebe2b2616609fa8a118020a75fdc26fac2067dtargetblankfdebe2ba" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  analysis/npreg_trendfilter_quantile.Rmd
+    Untracked:  code/suppfig09_?.R
+    Untracked:  data/HumanLengESC.rds
+    Untracked:  data/data_training_test/
+    Untracked:  data/eset-filtered.rds
+    Untracked:  data/fit.quant.rds
+    Untracked:  data/fit.trend.perm.lowmiss.rds
+    Untracked:  data/fit_diff_cyclone.rds
+    Untracked:  data/fit_diff_oscope.rds
+    Untracked:  data/fit_diff_peco.rds
+    Untracked:  data/fit_diff_recat.rds
+    Untracked:  data/fit_diff_seurat.rds
+    Untracked:  data/intensity.rds
+    Untracked:  data/log2cpm.quant.rds
+    Untracked:  data/macosko-2015.rds
+    Untracked:  data/ourdata_cyclone_NA18511.rds
+    Untracked:  data/ourdata_cyclone_NA18855.rds
+    Untracked:  data/ourdata_cyclone_NA18870.rds
+    Untracked:  data/ourdata_cyclone_NA19098.rds
+    Untracked:  data/ourdata_cyclone_NA19101.rds
+    Untracked:  data/ourdata_cyclone_NA19160.rds
+    Untracked:  data/ourdata_oscope_366genes.rda
+    Untracked:  data/ourdata_peco_NA18511_top005genes.rds
+    Untracked:  data/ourdata_peco_NA18855_top005genes.rds
+    Untracked:  data/ourdata_peco_NA18870_top005genes.rds
+    Untracked:  data/ourdata_peco_NA19098_top005genes.rds
+    Untracked:  data/ourdata_peco_NA19101_top005genes.rds
+    Untracked:  data/ourdata_peco_NA19160_top005genes.rds
+    Untracked:  data/ourdata_phase_cyclone.rds
+    Untracked:  data/ourdata_phase_seurat.rds
+    Untracked:  data/ourdata_recat.rda
+    Untracked:  data/sce-filtered.rds
+
+Unstaged changes:
+    Modified:   analysis/eval_on_our_data.Rmd
+    Modified:   analysis/index.Rmd
+    Modified:   code/fig2.R
+    Modified:   code/fig3.R
+    Modified:   code/fig4.R
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jhsiao999/peco-paper/blob/fdebe2b2616609fa8a118020a75fdc26fac2067d/analysis/predict_thinned_data.Rmd" target="_blank">fdebe2b</a>
+</td>
+<td>
+jhsiao999
+</td>
+<td>
+2020-01-25
+</td>
+<td>
+code to compute prediction error in unthinned and thinned data
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+</div>
+<div id="set-up" class="section level2">
+<h2>Set up</h2>
+<p>Load packages</p>
+<pre class="r"><code>library(SingleCellExperiment)
+library(peco)
+library(ggplot2)
+library(dplyr)</code></pre>
+<p>Prepare training/testing data</p>
+<pre class="r"><code>sce &lt;- readRDS(&quot;data/sce-final.rds&quot;)
+sce &lt;- sce[grep(&quot;ENSG&quot;, rownames(sce)),]
+fdata &lt;- data.frame(colData(sce))
+fdata &lt;- data.frame(rowData(sce))
+counts &lt;- data.frame(assay(sce, &quot;counts&quot;))
+
+sce_normed &lt;- data_transform_quantile(sce)
+log2cpm_quant &lt;- assay(sce_normed, &quot;cpm_quantNormed&quot;)
+
+inds &lt;- c(&quot;NA18511&quot;, &quot;NA18855&quot;, &quot;NA18870&quot;, &quot;NA19098&quot;, &quot;NA19101&quot;, &quot;NA19160&quot;)
+theta &lt;- pdata$theta
+
+# function to make training/testing data
+makedata_supervised &lt;- function(sce, log2cpm_quant,
+                                theta) {
+  message(&quot;Create data/data_training_test folder \n&quot;)
+  if (!file.exists(&quot;data/data_training_test&quot;)) { dir.create(&quot;data/data_training_test&quot;) }
+  library(SingleCellExperiment)
+  library(peco)
+  pdata &lt;- data.frame(colData(sce))
+  fdata &lt;- data.frame(rowData(sce))
+  counts &lt;- data.frame(assay(sce))
+  counts &lt;- counts[grep(&quot;ENSG&quot;, rownames(counts)), ]
+  log2cpm &lt;- t(log2(1+(10^6)*(t(counts)/pdata$molecules)))
+
+  for (ind in unique(pdata$chip_id)) {
+    ii_test &lt;- c(1:nrow(pdata))[which(pdata$chip_id == ind)]
+    ii_train &lt;- c(1:nrow(pdata))[which(pdata$chip_id != ind)]
+
+    pdata_test &lt;- pdata[ii_test,]
+    pdata_train &lt;- pdata[ii_train,]
+
+    log2cpm_quant_test &lt;- log2cpm_quant[,ii_test]
+    log2cpm_quant_train &lt;- log2cpm_quant[,ii_train]
+    theta &lt;- pdata$theta
+    names(theta) &lt;- rownames(pdata)
+
+    log2cpm_test &lt;- log2cpm[,ii_test]
+    log2cpm_train &lt;- log2cpm[,ii_train]
+
+    counts_test &lt;- counts[,ii_test]
+    counts_train &lt;- counts[,ii_train]
+
+    theta_test &lt;- theta[ii_test]
+    theta_train &lt;- theta[ii_train]
+
+    #sig.genes &lt;- readRDS(&quot;output/npreg-trendfilter-quantile.Rmd/out.stats.ordered.sig.476.rds&quot;)
+    data_training &lt;- list(theta_train=theta_train,
+                          log2cpm_quant_train=log2cpm_quant_train,
+                          log2cpm_train=log2cpm_train,
+                          counts_train=counts_train,
+                          pdata_train=pdata_train,
+                          fdata=fdata)
+
+    data_test &lt;- list(theta_test=theta_test,
+                      log2cpm_quant_test=log2cpm_quant_test,
+                      log2cpm_test=log2cpm_test,
+                      counts_test = counts_test,
+                      pdata_test=pdata_test,
+                      fdata=fdata)
+
+    saveRDS(data_training,
+            file=file.path(paste0(&quot;data/data_training_test/ind_&quot;,ind,&quot;_data_training.rds&quot;)))
+    saveRDS(data_test,
+            file=file.path(paste0(&quot;data/data_training_test/ind_&quot;,ind,&quot;_data_test.rds&quot;)))
+  }
+}
+makedata_supervised(sce, log2cpm_quant, theta)</code></pre>
+<p>Prepare thinned data. We used R package <a href="https://github.com/dcgerard/seqgendiff"><code>seqgendiff</code></a> to thin the expression.</p>
+<pre class="r"><code># function to make thinned data
+makedata_thinned &lt;- function(sce, thinlog2_rate) {
+
+  library(SingleCellExperiment)
+  library(peco)
+  pdata &lt;- data.frame(colData(sce))
+  fdata &lt;- data.frame(rowData(sce))
+  counts &lt;- assay(sce)[grep(&quot;ENSG&quot;, rownames(sce)), ]
+  log2cpm &lt;- t(log2(1+(10^6)*(t(counts)/pdata$molecules)))
+
+  # ---- thinning!
+  library(seqgendiff)
+  nsamp &lt;- ncol(counts)
+  inputmat &lt;- counts
+  thinlog2 &lt;- rexp(nsamp, rate = thinlog2_rate)
+  outmat &lt;- thin_lib(inputmat, thinlog2 = thinlog2)
+
+  counts_thin &lt;- outmat$mat
+  dimnames(counts_thin) &lt;- dimnames(counts)
+  libsize &lt;- colSums(counts_thin)
+
+  keep_samples &lt;- which(colMeans(counts_thin==0)&gt;.01)
+  keep_genes &lt;- which(rowMeans(counts_thin == 0 ) &lt; .5)
+  counts_thin &lt;- counts_thin[keep_genes, keep_samples]
+  libsize &lt;- libsize[keep_samples]
+
+  log2cpm_thin &lt;- t(log2(1+(10^6)*t(counts_thin)/libsize))
+  dimnames(log2cpm_thin) &lt;- dimnames(counts_thin)
+
+  log2cpm_thin_quant &lt;- do.call(rbind,
+                                lapply(1:nrow(log2cpm_thin), function(i) {
+                                  qqnorm(log2cpm_thin[i,], plot.it = F )$x }) )
+  dimnames(log2cpm_thin_quant) &lt;- dimnames(counts_thin)
+
+  saveRDS(list(counts_thin=counts_thin,
+               log2cpm_thin= log2cpm_thin,
+               log2cpm_thin_quant=log2cpm_thin_quant),
+          file=file.path(paste0(&quot;data/data_training_test/data_thinlog2_&quot;,
+                                     sprintf(&quot;%03d&quot;, 100*thinlog2_rate),&quot;.rds&quot;)))
+
+  pdata_thin &lt;- pdata[keep_samples,]
+
+  for (i in 1:length(unique(pdata$chip_id))) {
+    ind &lt;- unique(pdata_thin$chip_id)[i]
+    ii_test &lt;- c(1:nrow(pdata_thin))[which(pdata_thin$chip_id == ind)]
+    counts_test &lt;- counts[,ii_test]
+    counts_thin_test &lt;- counts_thin[,ii_test]
+    log2cpm_thin_test &lt;- log2cpm_thin[,ii_test]
+    log2cpm_thin_quant_test &lt;- log2cpm_thin_quant[,ii_test]
+
+    data_thin_test &lt;- list(counts_test=counts_test,
+                           counts_thin_test=counts_thin_test,
+                           log2cpm_thin_test=log2cpm_thin_test,
+                           log2cpm_thin_quant_test=log2cpm_thin_quant_test)
+
+    saveRDS(data_thin_test,
+            file=file.path(paste0(&quot;data/data_training_test/ind_&quot;,ind,&quot;_data_test_thinlog2_&quot;,
+                                       sprintf(&quot;%03d&quot;, 100*thinlog2_rate),&quot;.rds&quot;)))
+  }
+}
+
+makedata_thinned(sce, thinlog2_rate = .8)
+makedata_thinned(sce, thinlog2_rate = .33)</code></pre>
+</div>
+<div id="properties-of-the-thinned-datasets" class="section level2">
+<h2>Properties of the thinned datasets</h2>
+<p>Library size</p>
+<pre class="r"><code>data_thinlog2_033 &lt;- readRDS(&quot;data/data_training_test/data_thinlog2_033.rds&quot;)
+data_thinlog2_080 &lt;- readRDS(&quot;data/data_training_test/data_thinlog2_080.rds&quot;)
+
+
+# thin library size by a factor of 4.24
+mean(colSums(data_thinlog2_033$counts_thin))/mean(colSums(counts))
+mean(colSums(counts)/(1/.23))
+mean(colSums(data_thinlog2_033$counts_thin))
+1/.23
+
+# thin library size by a factor of 2.2
+mean(colSums(data_thinlog2_080$counts_thin))/mean(colSums(counts))
+mean(colSums(counts)/(1/.45))
+mean(colSums(data_thinlog2_080$counts_thin))
+1/.45</code></pre>
+<p>Number of genes detected</p>
+<pre class="r"><code>top5genes &lt;- c(&quot;ENSG00000170312&quot;,&quot;ENSG00000175063&quot;,
+           &quot;ENSG00000131747&quot;, &quot;ENSG00000198518&quot;, &quot;ENSG00000197061&quot;)
+inds &lt;- unique(pdata$chip_id)
+
+do.call(rbind, lapply(1:length(inds), function(i) {
+  ind &lt;- inds[i]
+  samps &lt;- rownames(pdata)[which(pdata$chip_id == ind)]
+  exp_tmp &lt;- data_thinlog2_080$counts_thin[,colnames(data_thinlog2_080$counts_thin) %in% samps]
+  data.frame(ind = ind,
+             g_detect = min(rowMeans(exp_tmp &gt; 0)),
+             g_detect_top50 = mean(rowMeans(exp_tmp[which(rownames(exp_tmp) %in% top5genes),] &gt; 0)))
+}))
+
+
+do.call(rbind, lapply(1:length(inds), function(i) {
+  ind &lt;- inds[i]
+  samps &lt;- rownames(pdata)[which(pdata$chip_id == ind)]
+  exp_tmp &lt;- data_thinlog2_033$counts_thin[,colnames(data_thinlog2_033$counts_thin) %in% samps]
+  data.frame(ind = ind,
+             g_detect = min(rowMeans(exp_tmp &gt; 0)))
+}))
+
+do.call(rbind, lapply(1:length(inds), function(i) {
+  ind &lt;- inds[i]
+  samps &lt;- rownames(pdata)[which(pdata$chip_id == ind)]
+  exp_tmp &lt;- counts[,colnames(counts) %in% samps]
+  data.frame(ind = ind,
+             g_detect = min(rowMeans(exp_tmp &gt; 0)))
+}))</code></pre>
+<p>Plot out properties of thinned data</p>
+<pre class="r"><code># checking...
+thing_080 &lt;- readRDS(&quot;data/data_training_test/data_thinlog2_080.rds&quot;)
+thing_033 &lt;- readRDS(&quot;data/data_training_test/data_thinlog2_033.rds&quot;)
+
+subsam &lt;- do.call(rbind, list(data.frame(libsize=colSums(counts), thinlog2=&quot;1&quot;),
+                              data.frame(libsize=colSums(thing_080$counts_thin), thinlog2=&quot;080&quot;),
+                              data.frame(libsize=colSums(thing_033$counts_thin), thinlog2=&quot;033&quot;)))
+subsam$thinlog2 &lt;- factor(subsam$thinlog2,
+                          levels=c(&quot;033&quot;, &quot;080&quot;, &quot;1&quot;),
+                          labels=c(&quot;4.4&quot;, &quot;2.2&quot;, &quot;1 (none)&quot;))
+ggplot(subsam, aes(x=thinlog2, y=libsize, group=thinlog2, fill=thinlog2)) +
+  geom_violin() +
+  geom_boxplot(width=.2, col=&quot;black&quot;) +
+  labs(fill=&quot;Thinning factor&quot;) +
+  ylab(&quot;Sample molecule count&quot;) +
+  xlab(&quot;Thinning factor&quot;)
+subsam %&gt;% group_by(thinlog2) %&gt;% summarize(mn = mean(libsize), sd = sd(libsize))</code></pre>
+</div>
+<div id="compute-prediction-error-on-unthinned-data" class="section level2">
+<h2>Compute prediction error on unthinned data</h2>
+<pre class="r"><code>fits_all &lt;- readRDS(&quot;data/fit.quant.rds&quot;)
+genes_all &lt;- names(fits_all)[order(sapply(fits_all,&quot;[[&quot;,3), decreasing=T)]
+
+res_unthinned &lt;- do.call(rbind, lapply(seq_along(unique(pdata$chip_id)), function(ind) {
+    ind &lt;- unique(pdata$chip_id)[i]
+    res_thin_each &lt;- do.call(rbind, lapply(2:50, function(ngenes) {
+        data_test &lt;- readRDS(paste0(&quot;data/data_training_test/ind_&quot;,ind,&quot;_data_test.rds&quot;))
+        data_train &lt;- readRDS(paste0(&quot;data/data_training_test/ind_&quot;,ind,&quot;_data_training.rds&quot;))
+
+        which_genes &lt;- genes_all[1:ngenes]
+        fit_train &lt;- cycle_npreg_insample(
+          Y = with(data_train, 
+                   log2cpm_quant_train[which(rownames(log2cpm_quant_train) %in% which_genes), ]),
+          theta = with(data_train, theta_train))
+        fit_test &lt;- cycle_npreg_outsample(
+            Y_test=with(data_test, 
+                        log2cpm_quant_test[which(rownames(log2cpm_quant_test) %in% which_genes), ]),
+            sigma_est=with(fit_train, sigma_est),
+            funs_est=with(fit_train, funs_est))
+    
+        diff_time &lt;- circ_dist(data_test$theta_test,
+                               rotation(data_test$theta_test, fit_test$cell_times_est))
+        out &lt;- data.frame(phase_pred_rot=rotation(data_test$theta_test, fit_test$cell_times_est),
+                   phase_ref=data_test$theta_test,
+                   diff_time=diff_time,
+                   ind = ind,
+                   ngenes = ngenes)
+        return(out)
+    }) )
+}) )
+
+
+res_unthinned %&gt;% group_by(ind, ngenes) %&gt;%
+  #  filter(ngenes &lt;= 20) %&gt;%
+  summarise(diff_mean = mean(diff_time/2/pi),
+            diff_se = sd(diff_time/2/pi)/sqrt(length(diff_time/2/pi))) %&gt;%
+  ggplot(., aes(x=factor(ngenes), y=diff_mean, group = ind)) +
+  #  geom_vline(xintercept=seq(5, 50,5)-1, col=&quot;gray90&quot;, lty=1) +
+  geom_hline(yintercept=seq(.1, .2, .01), col=&quot;gray90&quot;, lty=1) +
+  geom_line(aes(col=ind), lwd=.7) + # ggtitle(&quot;thinlog2 = .80&quot;) +
+  scale_fill_brewer(palette=&quot;Dark2&quot;) +
+  geom_errorbar(aes(ymin=diff_mean-diff_se,
+                    ymax=diff_mean+diff_se, col=ind), width=.2, alpha=.5) +
+  stat_summary(fun.y=mean,geom=&quot;line&quot;,lwd=.5, group=1) +
+  ylim(0,.3) + geom_hline(yintercept=.25, col=&quot;red&quot;) +
+  labs(color=&quot;Test data (Cell line)&quot;) +
+  xlab(&quot;Number of cyclic genes used in peco prediction&quot;) +
+  ylab(&quot;Prediction error (% circle)&quot;) +
+  scale_x_discrete(breaks=c(2:50),
+                   labels=c(rep(&quot;&quot;,3),5, rep(&quot;&quot;,4), 10, rep(&quot;&quot;,4), 15,
+                            rep(&quot;&quot;,4), 20, rep(&quot;&quot;,4), 25,
+                            rep(&quot;&quot;,4), 30, rep(&quot;&quot;,4), 35,
+                            rep(&quot;&quot;,4), 40, rep(&quot;&quot;,4), 45, rep(&quot;&quot;,4), 50)) +
+  ggtitle(&quot;Performance in unthinned data&quot;)</code></pre>
+</div>
+<div id="compute-prediction-error-on-thinned-data" class="section level2">
+<h2>Compute prediction error on thinned data</h2>
+<p>Use peco predictors trained on unthinned data of samples from 5 individual cell lines to predict cell cycle phase in thinned data of samples from an individual not seen in training.</p>
+<pre class="r"><code>fits_all &lt;- readRDS(&quot;data/fit.quant.rds&quot;)
+genes_all &lt;- names(fits_all)[order(sapply(fits_all,&quot;[[&quot;,3), decreasing=T)]
+
+res_thin_080 &lt;- do.call(rbind, lapply(seq_along(unique(pdata$chip_id)), function(ind) {
+    ind &lt;- unique(pdata$chip_id)[i]
+    res_thin_each &lt;- do.call(rbind, lapply(2:50, function(ngenes) {
+        data_test &lt;- readRDS(paste0(&quot;data/data_training_test/ind_&quot;,ind,&quot;_data_test.rds&quot;))
+        data_train &lt;- readRDS(paste0(&quot;data/data_training_test/ind_&quot;,ind,&quot;_data_training.rds&quot;))
+
+        which_genes &lt;- genes_all[1:ngenes]
+        fit_train &lt;- cycle_npreg_insample(
+          Y = with(data_train, 
+                   log2cpm_quant_train[which(rownames(log2cpm_quant_train) %in% which_genes), ]),
+          theta = with(data_train, theta_train))
+        
+        data_thin_test_080 &lt;- readRDS(paste0(&quot;data/data_training_test/ind_&quot;, 
+                                           ind, &quot;_data_test_thinlog2_080.rds&quot;))
+        fit_test_080 &lt;- cycle_npreg_outsample(
+            Y_test=with(data_thin_test_080, 
+                        log2cpm_thin_quant_test[which(rownames(log2cpm_thin_quant_test) %in% which_genes), ]),
+            sigma_est=with(fit_train, sigma_est),
+            funs_est=with(fit_train, funs_est))
+    
+        diff_time &lt;- circ_dist(data_test$theta_test,
+                               rotation(data_test$theta_test, fit_test_080$cell_times_est))
+        out &lt;- data.frame(phase_pred_rot=rotation(data_test$theta_test, fit_test$cell_times_est),
+                   phase_ref=data_test$theta_test,
+                   diff_time=diff_time,
+                   ind = ind,
+                   ngenes = ngenes)
+        return(out)
+    }) )
+}) )
+
+res_thin_033 %&gt;% group_by(ind, ngenes) %&gt;%
+  #  filter(ngenes &lt;= 20) %&gt;%
+  summarise(diff_mean = mean(diff_time/2/pi),
+            diff_se = sd(diff_time/2/pi)/sqrt(length(diff_time/2/pi))) %&gt;%
+  ggplot(., aes(x=factor(ngenes), y=diff_mean, group = ind)) +
+  #  geom_vline(xintercept=seq(5, 50,5)-1, col=&quot;gray90&quot;, lty=1) +
+  geom_hline(yintercept=seq(.1, .2, .01), col=&quot;gray90&quot;, lty=1) +
+  geom_line(aes(col=ind), lwd=.7) + # ggtitle(&quot;thinlog2 = .80&quot;) +
+  scale_fill_brewer(palette=&quot;Dark2&quot;) +
+  geom_errorbar(aes(ymin=diff_mean-diff_se,
+                    ymax=diff_mean+diff_se, col=ind), width=.2, alpha=.5) +
+  stat_summary(fun.y=mean,geom=&quot;line&quot;,lwd=.5, group=1) +
+  ylim(0,.3) + geom_hline(yintercept=.25, col=&quot;red&quot;) +
+  labs(color=&quot;Test data (Cell line)&quot;) +
+  xlab(&quot;Number of cyclic genes used in peco prediction&quot;) +
+  ylab(&quot;Prediction error (% circle)&quot;) +
+  scale_x_discrete(breaks=c(2:50),
+                   labels=c(rep(&quot;&quot;,3),5, rep(&quot;&quot;,4), 10, rep(&quot;&quot;,4), 15,
+                            rep(&quot;&quot;,4), 20, rep(&quot;&quot;,4), 25,
+                            rep(&quot;&quot;,4), 30, rep(&quot;&quot;,4), 35,
+                            rep(&quot;&quot;,4), 40, rep(&quot;&quot;,4), 45, rep(&quot;&quot;,4), 50)) +
+  ggtitle(&quot;Performance in data thinned by a factor of 2.2&quot;)
+
+
+res_thin_033 &lt;- do.call(rbind, lapply(seq_along(unique(pdata$chip_id)), function(ind) {
+    ind &lt;- unique(pdata$chip_id)[i]
+    res_thin_each &lt;- do.call(rbind, lapply(2:50, function(ngenes) {
+        data_test &lt;- readRDS(paste0(&quot;data/data_training_test/ind_&quot;,ind,&quot;_data_test.rds&quot;))
+        data_train &lt;- readRDS(paste0(&quot;data/data_training_test/ind_&quot;,ind,&quot;_data_training.rds&quot;))
+
+        which_genes &lt;- genes_all[1:ngenes]
+        fit_train &lt;- cycle_npreg_insample(
+          Y = with(data_train, 
+                   log2cpm_quant_train[which(rownames(log2cpm_quant_train) %in% which_genes), ]),
+          theta = with(data_train, theta_train))
+        
+        data_thin_test_033 &lt;- readRDS(paste0(&quot;data/data_training_test/ind_&quot;, 
+                                           ind, &quot;_data_test_thinlog2_033.rds&quot;))
+        fit_test_033 &lt;- cycle_npreg_outsample(
+            Y_test=with(data_thin_test_033, 
+                        log2cpm_thin_quant_test[which(rownames(log2cpm_thin_quant_test) %in% which_genes), ]),
+            sigma_est=with(fit_train, sigma_est),
+            funs_est=with(fit_train, funs_est))
+    
+        diff_time &lt;- circ_dist(data_test$theta_test,
+                               rotation(data_test$theta_test, fit_test_033$cell_times_est))
+        out &lt;- data.frame(phase_pred_rot=rotation(data_test$theta_test, fit_test$cell_times_est),
+                   phase_ref=data_test$theta_test,
+                   diff_time=diff_time,
+                   ind = ind,
+                   ngenes = ngenes)
+        return(out)
+    }) )
+}) )
+
+
+
+res_thin_033 %&gt;% group_by(ind, ngenes) %&gt;%
+  #  filter(ngenes &lt;= 20) %&gt;%
+  summarise(diff_mean = mean(diff_time/2/pi),
+            diff_se = sd(diff_time/2/pi)/sqrt(length(diff_time/2/pi))) %&gt;%
+  ggplot(., aes(x=factor(ngenes), y=diff_mean, group = ind)) +
+  #  geom_vline(xintercept=seq(5, 50,5)-1, col=&quot;gray90&quot;, lty=1) +
+  geom_hline(yintercept=seq(.1, .2, .01), col=&quot;gray90&quot;, lty=1) +
+  geom_line(aes(col=ind), lwd=.7) + # ggtitle(&quot;thinlog2 = .80&quot;) +
+  scale_fill_brewer(palette=&quot;Dark2&quot;) +
+  geom_errorbar(aes(ymin=diff_mean-diff_se,
+                    ymax=diff_mean+diff_se, col=ind), width=.2, alpha=.5) +
+  stat_summary(fun.y=mean,geom=&quot;line&quot;,lwd=.5, group=1) +
+  ylim(0,.3) + geom_hline(yintercept=.25, col=&quot;red&quot;) +
+  labs(color=&quot;Test data (Cell line)&quot;) +
+  xlab(&quot;Number of cyclic genes used in peco prediction&quot;) +
+  ylab(&quot;Prediction error (% circle)&quot;) +
+  scale_x_discrete(breaks=c(2:50),
+                   labels=c(rep(&quot;&quot;,3),5, rep(&quot;&quot;,4), 10, rep(&quot;&quot;,4), 15,
+                            rep(&quot;&quot;,4), 20, rep(&quot;&quot;,4), 25,
+                            rep(&quot;&quot;,4), 30, rep(&quot;&quot;,4), 35,
+                            rep(&quot;&quot;,4), 40, rep(&quot;&quot;,4), 45, rep(&quot;&quot;,4), 50)) +
+  ggtitle(&quot;Performance in data thinned by a factor of 4.3&quot;)</code></pre>
+</div>
+<div id="session-information" class="section level2">
+<h2>Session information</h2>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.5.1 (2018-07-02)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.4 (Nitrogen)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] parallel  stats4    stats     graphics  grDevices utils     datasets 
+[8] methods   base     
+
+other attached packages:
+ [1] dplyr_0.8.0.1               ggplot2_3.2.1              
+ [3] peco_0.99.6                 SingleCellExperiment_1.4.1 
+ [5] SummarizedExperiment_1.12.0 DelayedArray_0.8.0         
+ [7] BiocParallel_1.16.0         matrixStats_0.55.0         
+ [9] Biobase_2.42.0              GenomicRanges_1.34.0       
+[11] GenomeInfoDb_1.18.1         IRanges_2.16.0             
+[13] S4Vectors_0.20.1            BiocGenerics_0.28.0        
+
+loaded via a namespace (and not attached):
+ [1] viridis_0.5.1            genlasso_1.4            
+ [3] viridisLite_0.3.0        foreach_1.4.4           
+ [5] DelayedMatrixStats_1.4.0 assertthat_0.2.1        
+ [7] vipor_0.4.5              GenomeInfoDbData_1.2.0  
+ [9] yaml_2.2.0               pillar_1.3.1            
+[11] backports_1.1.2          lattice_0.20-38         
+[13] glue_1.3.0               digest_0.6.20           
+[15] promises_1.0.1           XVector_0.22.0          
+[17] colorspace_1.3-2         plyr_1.8.4              
+[19] htmltools_0.3.6          httpuv_1.4.5            
+[21] Matrix_1.2-17            pkgconfig_2.0.3         
+[23] zlibbioc_1.28.0          purrr_0.3.2             
+[25] mvtnorm_1.0-11           scales_1.0.0            
+[27] HDF5Array_1.10.1         whisker_0.3-2           
+[29] later_0.7.5              pracma_2.2.9            
+[31] git2r_0.26.1             tibble_2.1.1            
+[33] conicfit_1.0.4           withr_2.1.2             
+[35] lazyeval_0.2.1           magrittr_1.5            
+[37] crayon_1.3.4             evaluate_0.12           
+[39] fs_1.3.1                 doParallel_1.0.14       
+[41] MASS_7.3-51.1            beeswarm_0.2.3          
+[43] geigen_2.3               tools_3.5.1             
+[45] scater_1.10.1            stringr_1.3.1           
+[47] Rhdf5lib_1.4.3           munsell_0.5.0           
+[49] compiler_3.5.1           rlang_0.4.0             
+[51] rhdf5_2.26.2             grid_3.5.1              
+[53] RCurl_1.95-4.11          iterators_1.0.12        
+[55] circular_0.4-93          igraph_1.2.2            
+[57] bitops_1.0-6             rmarkdown_1.10          
+[59] boot_1.3-20              gtable_0.2.0            
+[61] codetools_0.2-15         reshape2_1.4.3          
+[63] R6_2.4.0                 gridExtra_2.3           
+[65] knitr_1.20               workflowr_1.6.0         
+[67] rprojroot_1.3-2          stringi_1.2.4           
+[69] ggbeeswarm_0.6.0         Rcpp_1.0.3              
+[71] tidyselect_0.2.5        </code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.5.1 (2018-07-02)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.4 (Nitrogen)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] parallel  stats4    stats     graphics  grDevices utils     datasets 
+[8] methods   base     
+
+other attached packages:
+ [1] dplyr_0.8.0.1               ggplot2_3.2.1              
+ [3] peco_0.99.6                 SingleCellExperiment_1.4.1 
+ [5] SummarizedExperiment_1.12.0 DelayedArray_0.8.0         
+ [7] BiocParallel_1.16.0         matrixStats_0.55.0         
+ [9] Biobase_2.42.0              GenomicRanges_1.34.0       
+[11] GenomeInfoDb_1.18.1         IRanges_2.16.0             
+[13] S4Vectors_0.20.1            BiocGenerics_0.28.0        
+
+loaded via a namespace (and not attached):
+ [1] viridis_0.5.1            genlasso_1.4            
+ [3] viridisLite_0.3.0        foreach_1.4.4           
+ [5] DelayedMatrixStats_1.4.0 assertthat_0.2.1        
+ [7] vipor_0.4.5              GenomeInfoDbData_1.2.0  
+ [9] yaml_2.2.0               pillar_1.3.1            
+[11] backports_1.1.2          lattice_0.20-38         
+[13] glue_1.3.0               digest_0.6.20           
+[15] promises_1.0.1           XVector_0.22.0          
+[17] colorspace_1.3-2         plyr_1.8.4              
+[19] htmltools_0.3.6          httpuv_1.4.5            
+[21] Matrix_1.2-17            pkgconfig_2.0.3         
+[23] zlibbioc_1.28.0          purrr_0.3.2             
+[25] mvtnorm_1.0-11           scales_1.0.0            
+[27] HDF5Array_1.10.1         whisker_0.3-2           
+[29] later_0.7.5              pracma_2.2.9            
+[31] git2r_0.26.1             tibble_2.1.1            
+[33] conicfit_1.0.4           withr_2.1.2             
+[35] lazyeval_0.2.1           magrittr_1.5            
+[37] crayon_1.3.4             evaluate_0.12           
+[39] fs_1.3.1                 doParallel_1.0.14       
+[41] MASS_7.3-51.1            beeswarm_0.2.3          
+[43] geigen_2.3               tools_3.5.1             
+[45] scater_1.10.1            stringr_1.3.1           
+[47] Rhdf5lib_1.4.3           munsell_0.5.0           
+[49] compiler_3.5.1           rlang_0.4.0             
+[51] rhdf5_2.26.2             grid_3.5.1              
+[53] RCurl_1.95-4.11          iterators_1.0.12        
+[55] circular_0.4-93          igraph_1.2.2            
+[57] bitops_1.0-6             rmarkdown_1.10          
+[59] boot_1.3-20              gtable_0.2.0            
+[61] codetools_0.2-15         reshape2_1.4.3          
+[63] R6_2.4.0                 gridExtra_2.3           
+[65] knitr_1.20               workflowr_1.6.0         
+[67] rprojroot_1.3-2          stringi_1.2.4           
+[69] ggbeeswarm_0.6.0         Rcpp_1.0.3              
+[71] tidyselect_0.2.5        </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
