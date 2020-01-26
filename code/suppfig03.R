@@ -2,15 +2,16 @@
 # RNA-seq data quality, PCA, etc ---------------------------------------------------------
 
 library(SingleCellExperiment)
+library(peco)
 sce_final <- readRDS("data/sce-final.rds")
+sce_final <- sce_final[grep("ENSG", rownames(sce_final)),]
 
 counts <- assay(sce_final)
-counts <- counts[grep("ENSG", rownames(counts)), ]
 pdata <- data.frame(colData(sce_final))
 
-log2cpm.all <- t(log2(1+(10^6)*(t(counts)/pdata$molecules)))
 
 # drop-out rate, number of singletons
+log2cpm.all <- t(log2(1+(10^6)*(t(counts)/pdata$molecules)))
 mean(rowMeans(log2cpm.all>0))
 sd(rowMeans(log2cpm.all>0))
 
