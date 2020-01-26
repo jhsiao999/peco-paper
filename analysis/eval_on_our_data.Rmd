@@ -164,6 +164,9 @@ diff_peco <- do.call(rbind, lapply(1:length(inds), function(i) {
                     ind = as.character(ind),
                     method = "peco"))
 }))
+diff_peco$ind = factor(diff_peco$ind, 
+                       levels = c("NA18511", "NA18855", "NA18870", 
+                                  "NA19098", "NA19101", "NA19160"))
 saveRDS(diff_peco, file=("data/fit_diff_peco.rds"))
 
 diff_peco %>% group_by(ind) %>% summarise(mn=mean(diff_time)/2/pi,
