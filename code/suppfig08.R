@@ -1,4 +1,6 @@
 # Supplemental Figure 8
+#   FUCCI scores for the six cell lines before and after correcting for C1 plate effect.
+
 library(ggplot2)
 library(RColorBrewer)
 library(cowplot)
