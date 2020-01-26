@@ -1,4 +1,11 @@
 # Supplemental Figure 10A-C
+#   Cyclic trends of gene expression based on FUCCI phase in 54 genes,
+# which is a subset of the top 101 cyclic genes that is also known to be cell
+# cycle genes in Macosko et al. 2015.
+
+# Notes
+#   - For details of how we estimate cycic trends, see
+#     https://jhsiao999.github.io/peco-paper/npreg_trendfilter_quantile.html
 
 library(SingleCellExperiment)
 library(circular)
@@ -6,9 +13,14 @@ library(peco)
 library(cluster)
 library(ggplot2)
 
-sce = readRDS("data/sce-final.rds")
-pdata = data.frame(colData(sce))
-fdata = data.frame(rowData(sce))
+sce <- readRDS("data/sce-final.rds")
+sce <- sce[grep("ENSG", rownames(sce)),]
+fdata <- data.frame(colData(sce))
+pdata <- data.frame(rowData(sce))
+counts <- data.frame(assay(sce, "counts"))
+
+sce_normed <- data_transform_quantile(sce)
+log2cpm_quant <- assay(sce_normed, "cpm_quantNormed")
 
 # derive cell cycle phase
 # use PCA to rotate the axes
@@ -52,11 +64,14 @@ macosko <- readRDS("data/macosko-2015.rds")
 # import quantile-normalized data
 data_quant <- readRDS("data/log2cpm.quant.rds")
 sample_ord <- rownames(pdata)[order(theta_final)]
-data_quant_ord <- data_quant[,match(sample_ord,colnames(data_quant))]
+data_quant_ord <- log2cpm_quant[,match(sample_ord,colnames(log2cpm_quant))]
 
-# get all significant cyclic genes assigend as cell cycle genes
-# get significant cyclic genes that are also classifed as cell cycle genes
-# permutation-based PVE
+# Get all significant cyclic genes assigend as cell cycle genes.
+# Specifically, get significant cyclic genes that are also classifed as cell cycle genes
+# permutation-based PVE.
+#   - For details of how we estimate cycic trends, see
+#     https://jhsiao999.github.io/peco-paper/npreg_trendfilter_quantile.html
+
 perm.lowmiss <- readRDS("data/fit.trend.perm.lowmiss.rds")
 pve.perm.lowmiss <- sapply(perm.lowmiss, "[[", "trend.pve")
 fit.quant <- readRDS("data/fit.quant.rds")
