@@ -3,15 +3,16 @@
 #
 # Note:
 #   - Report continuous cell cycle phase prediction
-#   - Please refer to eval_on_our_data.html for details of how we computed
-#     predicted cell cycle phase in each method, and computed prediction error.
+#   - For details of how we computed predicted cell cycle phase in each method,
+#     and computed prediction error, please see
+#     https://jhsiao999.github.io/peco-paper/eval_on_our_data.html. This
+#     file produced "data/fit_diff*.rds".
 
 
 library(SingleCellExperiment)
 library(peco)
 library(ggplot2)
 library(wesanderson)
-
 
 
 
@@ -74,7 +75,11 @@ genes <- c("ENSG00000170312","ENSG00000175063",
            "ENSG00000131747", "ENSG00000198518", "ENSG00000197061")
 inds <- "NA18511"
 
+
 # peco
+# For details of how we estimated cyclic trend using peco of 5 genes, see
+# https://jhsiao999.github.io/peco-paper/predict_thinned_data.html.
+
 pred_peco <- lapply(1:length(inds), function(i) {
   ind <- inds[i]
   out <- readRDS(paste0("data/ourdata_peco_",
@@ -154,7 +159,6 @@ names(pred_seurat) <- inds
 
 # Oscope
 load("data/ourdata_oscope_366genes.rda")
-
 pred_oscope <- lapply(1:length(inds), function(i) {
   out_oscope_sub <- out_oscope[out_oscope$ind == inds[i],]
   fits <- lapply(1:5, function(g) {
