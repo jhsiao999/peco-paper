@@ -1,9 +1,12 @@
 # Supplemental Figure S18
 # Cyclic expression predicted results of each method
 #
-# For details of how we derive predicted cell cycle phase in each method,
-# please refer to eval_on_our_data.html.
-
+# Notes
+#   - For details of how we applied each method, estimated cyclic trends and
+#     computed prediction error, see
+#     https://jhsiao999.github.io/peco-paper/eval_on_our_data.html. This
+#     file produced "data/fit_diff*.rds" files and also the results of cell cycle
+#     prediction in each method.
 
 library(SingleCellExperiment)
 library(peco)
