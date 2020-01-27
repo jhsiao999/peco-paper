@@ -21,3 +21,4 @@ data/fit.trend.perm.lowmiss.rds filter=lfs diff=lfs merge=lfs -text
 data/fit.trend.perm.highmiss.rds
  filter=lfs diff=lfs merge=lfs -text
 data/ourdata_cyclone*.rds filter=lfs diff=lfs merge=lfs -text
+data/macosko-2015.rds filter=lfs diff=lfs merge=lfs -text
