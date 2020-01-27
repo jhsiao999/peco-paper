@@ -1,5 +1,8 @@
 # Supplemental Figure S12
-# Comparison of FUCCI phase with phase assignment by Oscope and reCAT
+#     Comparison of FUCCI phase with phase assignment by Oscope and reCAT
+# Notes
+#   - For details of how we applied each method, estimated cyclic trends and
+#     computed prediction error, see https://jhsiao999.github.io/peco-paper/eval_on_our_data.html
 
 library(SingleCellExperiment)
 sce <- readRDS("data/sce-final.rds")
