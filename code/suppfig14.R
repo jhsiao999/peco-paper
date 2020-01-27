@@ -1,10 +1,19 @@
 # Supplemental Figure S14
-# Comparison of FUCCI phase with phase assignment by Seurat and Cyclone
+#   Comparison of FUCCI phase with phase assignment by Seurat and Cyclone
 
 library(SingleCellExperiment)
 library(peco)
+library(cluster)
+
 sce <- readRDS("data/sce-final.rds")
+sce <- sce[grep("ENSG", rownames(sce)),]
 pdata <- data.frame(colData(sce))
+fdata <- data.frame(rowData(sce))
+counts <- assay(sce, "counts")
+
+sce <- data_transform_quantile(sce)
+log2cpm_quantNormed <- assay(sce, "cpm_quantNormed")
+
 
 # derive cell cycle phase
 # use PCA to rotate the axes
@@ -30,10 +39,22 @@ abline(v=c(b1,b2,b3), lty=2)
 
 # Supp Fig 14A
 # Seurat and PAM-based classification obtained from FUCCI scores
-out_seurat <- readRDS("data/ourdata_phase_seurat.rds")
-phase_seurat_rot <- rotation(pdata$theta,
-                             out_seurat$phase_peco[match(rownames(pdata),
-                                                         rownames(out_seurat))])
+library(Seurat)
+cc.genes <- readLines(con = "data/regev_lab_cell_cycle_genes.txt")
+s.genes <- cc.genes[1:43]; g2m.genes <- cc.genes[44:97]
+rownames_hgnc <- fdata[rownames(counts),]$name
+
+obj <- CreateSeuratObject(counts = counts)
+obj <- NormalizeData(obj)
+obj <- FindVariableFeatures(obj, selection.method = "vst")
+obj <- ScaleData(obj, features = rownames(obj))
+obj <- CellCycleScoring(obj, s.features = s.genes, g2m.features = g2m.genes, set.ident = TRUE)
+
+out_seurat <- obj[[]]
+all.equal(rownames(out_seurat), colnames(log2cpm_quantNormed))
+out_seurat <- out_seurat[match(colnames(log2cpm_quantNormed), rownames(out_seurat)),]
+
+
 out_seurat$Phase <- factor(out_seurat$Phase,
                            levels = c("G1", "S", "G2M"))
 out_seurat_ordered <- out_seurat[match(rownames(pdata), rownames(out_seurat)),]
@@ -41,12 +62,24 @@ out_seurat_ordered <- out_seurat[match(rownames(pdata), rownames(out_seurat)),]
 all.equal(as.character(clust$sample_id), rownames(out_seurat_ordered))
 table(out_seurat_ordered$Phase, clust$clust)
 
+
+
 # Supp Fig S14B
 # Cyclone and PAM-based classification obtained from FUCCI scores
-out_cyclone <- readRDS("data/ourdata_phase_cyclone.rds")
-phase_cyclone_rot <- rotation(pdata$theta,
-                              out_cyclone$phase_cyclone_rotated[match(rownames(pdata),
-                                                                      rownames(out_cyclone))])
+#
+# run Cyclone
+Y_cyclone <- log2cpm_quantNormed
+
+library(scran)
+hs.pairs <- readRDS(system.file("exdata", "human_cycle_markers.rds", package="scran"))
+
+out_cyclone <- cyclone(Y_cyclone, pairs = hs.pairs,
+                       gene.names=rownames(Y_cyclone),
+                       iter=1000, min.iter=100, min.pairs=50,
+                       BPPARAM=SerialParam(), verbose=T, subset.row=NULL)
+names(out_cyclone$phases) <- colnames(Y_cyclone)
+all.equal(names(out_cyclone$phases), colnames(log2cpm_quantNormed))
+
 out_cyclone$phases <- factor(out_cyclone$phases,
                              levels = c("G1", "S", "G2M"))
 out_cyclone_ordered_phases <- out_cyclone$phases[match(rownames(pdata), names(out_cyclone$phases))]
