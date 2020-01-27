@@ -223,16 +223,18 @@ div.section {
 
 <div id="TOC">
 <ul>
-<li><a href="#introduction">Introduction</a></li>
-<li><a href="#software">Software</a></li>
-<li><a href="#data-access">Data access</a></li>
-<li><a href="#code-availability">Code availability</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#the-software-peco">The software peco</a></li>
+<li><a href="#the-analysis">The analysis</a></li>
+<li><a href="#citation">Citation</a></li>
+<li><a href="#downloading-the-data-files">Downloading the data files</a></li>
+<li><a href="#other-information">Other information</a></li>
 </ul>
 </div>
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -241,7 +243,7 @@ div.section {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -250,22 +252,22 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-09-16
+<strong>Last updated:</strong> 2020-01-26
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>peco-paper/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
 </p>
 <p>
 This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
-  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.4.0). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.0). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
 </p>
 <hr>
 </div>
 <div id="checks" class="tab-pane fade">
-<div class="panel-group" id="workflowr-checks">
+<div id="workflowr-checks" class="panel-group">
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
@@ -281,57 +283,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongobjectspresent"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>Environment:</strong> objects present </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
 </p>
 </div>
-<div id="strongEnvironmentstrongobjectspresent" class="panel-collapse collapse">
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
 <div class="panel-body">
-
-<p>
-The global environment had objects present when the code in the R Markdown file was run. These objects can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment. Use <code>wflow_publish</code> or <code>wflow_build</code> to ensure that the code is always run in an empty environment.
-</p>
-<p>
-The following objects were defined in the global environment when these results were created:
-</p>
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th style="text-align:left;">
-Name
-</th>
-<th style="text-align:left;">
-Class
-</th>
-<th style="text-align:left;">
-Size
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-data
-</td>
-<td style="text-align:left;">
-environment
-</td>
-<td style="text-align:left;">
-56 bytes
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-env
-</td>
-<td style="text-align:left;">
-environment
-</td>
-<td style="text-align:left;">
-56 bytes
-</td>
-</tr>
-</tbody>
-</table>
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
 </div>
 </div>
 </div>
@@ -386,10 +343,10 @@ environment
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertree944d881d17827b515629826ba9be78260976fec1targetblank944d881a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jhsiao999/peco-paper/tree/944d881d17827b515629826ba9be78260976fec1" target="_blank">944d881</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertreeea63cb6a73c3f6edfa344f2e1287ab8c89c615ebtargetblankea63cb6a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jhsiao999/peco-paper/tree/ea63cb6a73c3f6edfa344f2e1287ab8c89c615eb" target="_blank">ea63cb6</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertree944d881d17827b515629826ba9be78260976fec1targetblank944d881a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjhsiao999pecopapertreeea63cb6a73c3f6edfa344f2e1287ab8c89c615ebtargetblankea63cb6a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -398,6 +355,16 @@ Great! You are using Git for version control. Tracking code development and conn
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  code/note_wo_w_pca.R
+    Untracked:  data/intensity.rds
+    Untracked:  data/log2cpm.quant.rds
+    Untracked:  data/ourdata_phase_cyclone.rds
+    Untracked:  data/ourdata_phase_seurat.rds
+
+Unstaged changes:
+    Modified:   code/run_seurat.R
 
 </code></pre>
 <p>
@@ -436,6 +403,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jhsiao999/peco-paper/blob/ea63cb6a73c3f6edfa344f2e1287ab8c89c615eb/analysis/index.Rmd" target="_blank">ea63cb6</a>
+</td>
+<td>
+jhsiao999
+</td>
+<td>
+2020-01-26
+</td>
+<td>
+homepage
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jhsiao999/peco-paper/blob/206dbf5479978a755cd3df50aa46b90532601ee1/analysis/index.Rmd" target="_blank">206dbf5</a>
+</td>
+<td>
+jhsiao999
+</td>
+<td>
+2020-01-12
+</td>
+<td>
+updates
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jhsiao999/peco-paper/35b41c28c878450a7933a18cf426edcec1b69c0a/docs/index.html" target="_blank">35b41c2</a>
+</td>
+<td>
+jhsiao999
+</td>
+<td>
+2019-09-16
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -596,42 +614,45 @@ Start workflowr project.
 </div>
 </div>
 </div>
-<p><span class="math inline">\(~\)</span></p>
-<div id="introduction" class="section level3">
-<h3>Introduction</h3>
-<p>Cell cycle phase and cell types - among many reasons - are argubly the most candidates driving differences in gene expression among cells.</p>
-<p><strong>peco</strong> is a supervised approach for predicting <em>continuous</em> cell cycle phase in single-cell RNA-seq (scRNA-seq) data analysis.</p>
-<p>We developed <strong>peco</strong> in a study that combined fluorescence imaging with scRNA-seq to measure cell cycle phase and gene expression levels in human induced pluripotent stem cells (iPSCs).</p>
-<ul>
-<li><p>Our paper: <a href="doi.org/10.1101/526848">Characterizing and inferring quantitative cell-cycle phase in single-cell RNA-seq data analysis</a>.</p></li>
-<li><p>Our software:</p></li>
-</ul>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p><strong>peco</strong> is a supervised approach for predicting <em>continuous</em> cell cycle phase using single-cell RNA-seq (scRNA-seq) data. The approach is described in <a href="doi.org/10.1101/526848">our paper</a>.</p>
+<p>We use this site to document and share the code used to produce our analysis. Please feel free to explore. Comments and feedbacks are welcome!</p>
 </div>
-<div id="software" class="section level3">
-<h3>Software</h3>
-<ul>
-<li><a href="https://github.com/jhsiao999/peco">peco 0.99.0</a> is submitted and pending review on Bioconductor.</li>
-</ul>
-<p>The development version can be downloaded from GitHub</p>
+<div id="the-software-peco" class="section level2">
+<h2>The software peco</h2>
+<p>We quantified continous cell cycle phase using FUCCI fluorescence imaging and trained peco to predict this continuous cell cycle phase using scRNA-seq data collected from six human cell lines. <a href="doi.org/10.1101/526848">Our paper</a> showed that peco produces robust cell cycle phase predictions using strong cyclic genes - genes which expression levels oscillate along the cell cycle.</p>
+<p>The software <strong>peco</strong> will be released in <a href="https://www.bioconductor.org/developers/release-schedule/">Biconductor 3.11</a>. This release will use the latest <a href="https://cran.r-project.org/">R3.6.1</a>.</p>
+<p>The development version is available on <a href="https://github.com/jhsiao999/peco">GitHub</a>. To install the development version,</p>
 <pre class="r"><code>devtools::install_github(&quot;jhsiao999/peco&quot;)
 library(peco)</code></pre>
 </div>
-<div id="data-access" class="section level3">
-<h3>Data access</h3>
+<div id="the-analysis" class="section level2">
+<h2>The analysis</h2>
 <ul>
-<li><p>GEO record <a href="http://www.ncbi.nlm.nih.gov/%20geo/query/acc.cgi?acc=GSE121265">GSE121265</a> for all raw and processed sequencing data</p></li>
-<li><p>The processed data data sets are also available in as a gzip compressed tarball on the <a href="https://giladlab.uchicago.edu/data/">Gilad lab website</a>: <a href="https://giladlab.uchicago.edu/wp-content/uploads/2019/02/Hsiao_et_al_2019.tar.gz" class="uri">https://giladlab.uchicago.edu/wp-content/uploads/2019/02/Hsiao_et_al_2019.tar.gz</a>.</p></li>
-<li><p>All data sets used in our analysis are listed and downloadable at <a href="https://jdblischak.github.io/fucci-seq/data-overview.html" class="uri">https://jdblischak.github.io/fucci-seq/data-overview.html</a>.</p></li>
+<li><p><a href="https://jhsiao999.github.io/peco-paper/access_data.html">Process scRNA-seq and imaging data</a></p></li>
+<li><p><a href="https://jhsiao999.github.io/peco-paper/npreg_trendfilter_quantile.html">Estimate the cyclic trends of gene expression levels</a></p></li>
+<li><p><a href="https://jhsiao999.github.io/peco-paper/eval_on_our_data.html">Compare the performance of peco with other methods on our data</a></p></li>
+<li><p><a href="https://jhsiao999.github.io/peco-paper/eval_on_leng2015_data.html">Compare the performance of peco with other methods using Leng et al. 2015 data</a></p></li>
+<li><p><a href="https://jhsiao999.github.io/peco-paper/predict_thinned_data.html">Assess the performance of peco in thinned data</a></p></li>
+<li><p><a href="https://github.com/jhsiao999/peco-paper/tree/master/code">Produce figures shown in our paper</a></p></li>
 </ul>
 </div>
-<div id="code-availability" class="section level3">
-<h3>Code availability</h3>
-<p>Find out how we</p>
+<div id="citation" class="section level2">
+<h2>Citation</h2>
+<p><a href="doi.org/10.1101/526848">Characterizing and inferring quantitative cell-cycle phase in single-cell RNA-seq data analysis</a>.</p>
+</div>
+<div id="downloading-the-data-files" class="section level2">
+<h2>Downloading the data files</h2>
+<p>You have two main options for downloading the data files. First, you can manually download the individual files by clicking on the links on this page or navigating to the files in the <a href="https://github.com/jhsiao999/peco-paper">peco-paper</a> GitHub repository. This is the recommended strategy if you only need a few data files.</p>
+<p>Second, you can install <a href="https://git-lfs.github.com/">git-lfs</a>. To handle large files, we used Git Large File Storage (LFS). This means that the files that you download with <code>git clone</code> are only plain text files that contain identifiers for the files saved on GitHub’s servers. If you want to download all of the data files at once, you can do this with after you install git-lfs.</p>
+<p>To install git-lfs, follow their instructions to download, install, and setup (<code>git lfs install</code>). Alternatively, if you use conda, you can install git-lfs with <code>conda install -c conda-forge git-lfs</code>. Once installed, you can download the latest version of the data files with <code>git lfs pull</code>.</p>
+</div>
+<div id="other-information" class="section level2">
+<h2>Other information</h2>
 <ul>
-<li><p><a href="access_data.html">processed scRNA-seq and imaging data</a></p></li>
-<li><p><a href="https://jdblischak.github.io/fucci-seq/images-circle-ordering-eval.html">infer an angel for each cell based on FUCCI fluorescence intensities</a></p></li>
-<li><p><a href="https://jdblischak.github.io/fucci-seq/npreg-trendfilter-quantile.html">estimated the cyclic trends of gene expression levels</a></p></li>
-<li><p><a href="https://github.com/jhsiao999/peco-paper/tree/master/code">analyzed our data and generated figures in our paper</a></p></li>
+<li><p>GEO record <a href="http://www.ncbi.nlm.nih.gov/%20geo/query/acc.cgi?acc=GSE121265">GSE121265</a> for all raw and processed sequencing data.</p></li>
+<li><p>We also provide the processed data in TXT format as a gzip compressed tarball on the <a href="https://giladlab.uchicago.edu/wp-content/uploads/2019/02/Hsiao_et_al_2019.tar.gz">Gilad lab website</a>.</p></li>
 </ul>
 <br>
 <p>
@@ -660,11 +681,12 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 loaded via a namespace (and not attached):
- [1] workflowr_1.4.0 Rcpp_1.0.2      digest_0.6.20   rprojroot_1.3-2
- [5] backports_1.1.2 git2r_0.25.2    magrittr_1.5    evaluate_0.12  
- [9] highr_0.7       stringi_1.2.4   fs_1.3.1        whisker_0.3-2  
-[13] rmarkdown_1.10  tools_3.5.1     stringr_1.3.1   glue_1.3.0     
-[17] yaml_2.2.0      compiler_3.5.1  htmltools_0.3.6 knitr_1.20     </code></pre>
+ [1] workflowr_1.6.0 Rcpp_1.0.3      digest_0.6.20   later_0.7.5    
+ [5] rprojroot_1.3-2 R6_2.4.0        backports_1.1.2 git2r_0.26.1   
+ [9] magrittr_1.5    evaluate_0.12   stringi_1.2.4   fs_1.3.1       
+[13] promises_1.0.1  whisker_0.3-2   rmarkdown_1.10  tools_3.5.1    
+[17] stringr_1.3.1   glue_1.3.0      httpuv_1.4.5    yaml_2.2.0     
+[21] compiler_3.5.1  htmltools_0.3.6 knitr_1.20     </code></pre>
 </div>
 </div>
 
