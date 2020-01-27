@@ -1,7 +1,10 @@
 # Supplemental Figure S16
 # Comparison of prediction error on our data in cross-validation.
-#
-# For details of computation, please refer to eval_on_our_data.html.
+
+# Notes
+#   - For details of how we applied each method, estimated cyclic trends and
+#     computed prediction error, see https://jhsiao999.github.io/peco-paper/eval_on_our_data.html
+
 
 diff_cyclone <- readRDS("data/fit_diff_cyclone.rds")
 diff_recat <- readRDS("data/fit_diff_recat.rds")
