@@ -1,4 +1,6 @@
 # Supplemental Figure S15
+#   Continuous cell cycle phase assignmetn based on the two Seurat phase-specific
+# scores for samples from cell line NA19098.
 
 library(SingleCellExperiment)
 sce <- readRDS("data/sce-final.rds")
