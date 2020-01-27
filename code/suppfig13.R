@@ -1,4 +1,10 @@
 # Supplemental Figure S13
+#   FUCCI scores and inferred phase from peco in individual cell lines.
+#
+# Notes
+#   - For details of how we used peco to estimate continuous cell cycle phase in
+#     individual cell lines, see https://jhsiao999.github.io/peco-paper/predict_thinned_data.html
+
 
 library(peco)
 library(SingleCellExperiment)
@@ -10,7 +16,7 @@ pdata <- data.frame(colData(sce))
 pred_peco <- lapply(1:length(inds), function(i) {
   ind <- inds[i]
   out <- readRDS(paste0("data/ourdata_peco_",
-                        ind, "_top",sprintf("%03d", 5), "genes_grids_", 100, ".rds"))
+                        ind, "_top",sprintf("%03d", 5), "genes.rds"))
   gfp <- pdata$gfp.median.log10sum.adjust
   rfp <- pdata$rfp.median.log10sum.adjust
   gfp_ind <- gfp[match(names(out$fit_test$cell_times_est)[order(out$fit_test$cell_times_est)],
