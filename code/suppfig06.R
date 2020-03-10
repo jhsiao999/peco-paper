@@ -56,3 +56,11 @@ cor.test(pdata$dapi.median.log10sum.adjust,
 
 cor.test(pdata$gfp.median.log10sum.adjust,
          pdata$rfp.median.log10sum.adjust, method = "pearson")
+
+
+# Compute FUCCI phase, do a PCA rotation
+ints <- data.frame(rfp=colData(sce)$rfp.median.log10sum.adjust,
+                   gfp=colData(sce)$gfp.median.log10sum.adjust)
+pca <- prcomp(ints)
+theta <- coord2rad(pca$x)
+theta_final <- shift_origin(as.numeric(theta), origin = 3*pi/4)
