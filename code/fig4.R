@@ -59,19 +59,18 @@ out_peco <- cycle_npreg_outsample(
   ncores=4,
   get_trend_estimates=TRUE)
 
+# Fig 4A. plot expression by gating-based classification
 subdata_plot <- do.call(rbind, lapply(1:4, function(g) {
   gindex <- which(rownames(out_peco$Y_reordered) == gene_symbols[g])
-  gexp <- out_peco$Y_reordered[gindex,]
+  gexp <- out_peco$Y_reordered[gindex,rownames(pdata_fucci)]
   data.frame(gexp=gexp, gene=gene_symbols[g], cell_state=pdata_fucci$cell_state)
 }))
-
-#
 levels(subdata_plot$gene) = c("CDK1", "UBE2C", "TOP2A", "H4C3")
 ggplot(subdata_plot, aes(x=cell_state, y = gexp, fill=cell_state)) +
   geom_boxplot() + facet_wrap(~gene, ncol=4) +
   ylab("Quantile-normalized \n gene expression levels") + xlab("") +
   scale_fill_manual(values=as.character(yarrr::piratepal("espresso")[3:1]),
-                    name="Phase") + theme_bw() +
+                    name="Gating-based \n phase") + theme_bw() +
   theme(strip.text = element_text(face = "italic"))
 
 
