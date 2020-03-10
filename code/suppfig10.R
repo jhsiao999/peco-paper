@@ -15,8 +15,8 @@ library(ggplot2)
 
 sce <- readRDS("data/sce-final.rds")
 sce <- sce[grep("ENSG", rownames(sce)),]
-fdata <- data.frame(colData(sce))
-pdata <- data.frame(rowData(sce))
+pdata <- data.frame(colData(sce))
+fdata <- data.frame(rowData(sce))
 counts <- data.frame(assay(sce, "counts"))
 
 sce_normed <- data_transform_quantile(sce)
@@ -105,6 +105,7 @@ names(fits_tmp) <- which_sig_cycle_genes$names
 # Supp Fig 10A
 par(mfrow=c(4,5), mar=c(2,2,2,1))
 for (i in 1:20) {
+  gene_name = which_sig_cycle_genes$names[i]
   plot(x=theta_final[order(theta_final)],
        y=data_quant_ord[rownames(data_quant_ord)==which_sig_cycle_genes$ensg[i],],
        col="gray50",

@@ -49,4 +49,10 @@ cor.test(pdata$dapi.median.log10sum.adjust,
          pdata$gfp.median.log10sum.adjust, method = "spearman")
 cor.test(pdata$dapi.median.log10sum.adjust,
          pdata$rfp.median.log10sum.adjust, method = "spearman")
+cor.test(pdata$dapi.median.log10sum.adjust,
+         pdata$gfp.median.log10sum.adjust, method = "pearson")
+cor.test(pdata$dapi.median.log10sum.adjust,
+         pdata$rfp.median.log10sum.adjust, method = "pearson")
 
+cor.test(pdata$gfp.median.log10sum.adjust,
+         pdata$rfp.median.log10sum.adjust, method = "pearson")
