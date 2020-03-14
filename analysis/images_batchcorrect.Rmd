@@ -248,6 +248,24 @@ rfp.plot
 dapi.plot
 ```
 
+Analysis of variation on data after correcting for plate effect shows that plate effect is no longer a significant contributor of variation in fluorescence intensity.
+
+
+```{r}
+lm.rfp.adjust <- lm(rfp.median.log10sum.adjust~factor(chip_id)+factor(experiment),
+             data = cdata)
+lm.gfp.adjust <- lm(gfp.median.log10sum.adjust~factor(chip_id)+factor(experiment),
+             data = cdata)
+lm.dapi.adjust <- lm(dapi.median.log10sum.adjust~factor(chip_id)+factor(experiment),
+             data = cdata)
+
+aov.lm.rfp <- Anova(lm.rfp, type = "III")
+aov.lm.gfp <- Anova(lm.gfp, type = "III")
+aov.lm.dapi <- Anova(lm.dapi, type = "III")
+aov.lm.rfp
+aov.lm.gfp
+aov.lm.dapi
+```
 
 
 ```{r, echo = FALSE}
