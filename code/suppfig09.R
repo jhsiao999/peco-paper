@@ -44,17 +44,6 @@ ggplot(data.frame(gfp=pdata$gfp.median.log10sum.adjust,
   ggtitle("")
 
 
-# Figure S9C: DAPI score distribution in each PAM-basec class
-par(mfrow = c(1,3))
-for (i in 1:3) {
-  hist(pData(eset)$dapi.median.log10sum.adjust[clust$clust==i],
-       xlab = "DAPI score", main = "", xlim = c(-1.6, .7),
-       lty = "blank", col = "gray40", breaks = 60)
-  abline(v = mean(pData(eset)$dapi.median.log10sum.adjust[clust$clust==i]) +
-           c(1, 0, -1) * sd(pData(eset)$dapi.median.log10sum.adjust[clust$clust==i]),
-         col = "orange", lty = c(2, 1, 2))
-}
-
 
 
 # Figure S9B:
@@ -98,4 +87,6 @@ table(subdata_plot$max_state,
 (14+24+25)/(8+14+14+24+25)
 # G2M
 (26+51)/(26+51+99+91+53)
+
+
 
