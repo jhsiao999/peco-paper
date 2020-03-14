@@ -14,11 +14,11 @@ pdata$experiment <- factor(pdata$experiment)
 
 
 # Intensity batch effect ---------------------------------------------------------
-lm.rfp <- lm(rfp.median.log10sum~factor(chip_id)+factor(experiment) + factor(image_label),
+lm.rfp <- lm(rfp.median.log10sum~factor(chip_id)+factor(experiment),
              data = pdata)
-lm.gfp <- lm(gfp.median.log10sum~factor(chip_id)+factor(experiment) + factor(image_label),
+lm.gfp <- lm(gfp.median.log10sum~factor(chip_id)+factor(experiment),
              data = pdata)
-lm.dapi <- lm(dapi.median.log10sum~factor(chip_id)+factor(experiment) + factor(image_label),
+lm.dapi <- lm(dapi.median.log10sum~factor(chip_id)+factor(experiment),
               data = pdata)
 
 library(car)
