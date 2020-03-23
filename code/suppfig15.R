@@ -1,52 +1,57 @@
 # Supplemental Figure S15
-#   Continuous cell cycle phase assignmetn based on the two Seurat phase-specific
-# scores for samples from cell line NA19098.
+# Comparison of prediction error on our data in cross-validation.
 
-library(SingleCellExperiment)
-sce <- readRDS("data/sce-final.rds")
+# Notes
+#   - For details of how we applied each method, estimated cyclic trends and
+#     computed prediction error, see https://jhsiao999.github.io/peco-paper/eval_on_our_data.html
 
-# import Seurat results
-inds <- c("NA19098","NA18511","NA18870","NA19101","NA18855","NA19160")
-eval_seurat <- lapply(1:length(inds), function(j) {
-  ind <- inds[j]
-  fl_name <- file.path(paste0("data/ind_",ind,
-                           "_results_overallcyclical.top5.rds"))
-  df <- readRDS(fl_name)
-  return(df$fit.test)
-})
-names(eval_seurat) <- inds
 
-# Seurat scores before PCA transformation
-par(mfrow=c(1,1), mar=c(5,4,3,1))
-plot(eval_seurat[[1]]$fit.seurat$S,
-     eval_seurat[[1]]$fit.seurat$G2M,
-     xlab="S score",
-     ylab="G2M score",
-     pch=16, cex=.5, axes=F, xlim=c(-1.5,1.5), ylim=c(-1.5,1.5),
-     col=c("darkgoldenrod1", "coral", "darkred")[eval_seurat[[1]]$fit.seurat$assignments])
-axis(1); axis(2)
-abline(v=0,a=0,b=1,h=0, lty=2, lwd=.5)
+diff_cyclone <- readRDS("data/fit_diff_cyclone.rds")
+diff_recat <- readRDS("data/fit_diff_recat.rds")
+diff_peco <- readRDS("data/fit_diff_peco.rds")
+diff_seurat <- readRDS("data/fit_diff_seurat.rds")
+diff_oscope <- readRDS("data/fit_diff_oscope.rds")
 
-# Seurat scores after PCA transformation
-par(mfrow=c(1,1), mar=c(5,4,3,1))
-seurat.pca <- prcomp(cbind(eval_seurat[[1]]$fit.seurat$G2M,
-                           eval_seurat[[1]]$fit.seurat$S), scale=TRUE)
-seurat.cell_times_est <- as.numeric(coord2rad(cbind(seurat.pca$x[,1],seurat.pca$x[,2])))
-(seurat.pca$sdev^2)/sum(seurat.pca$sdev^2)
-plot(seurat.pca$x[,1],seurat.pca$x[,2], pch=16, cex=.5,
-     xlim=c(-4,4),ylim=c(-4,4),
-     col=c("darkgoldenrod1", "coral", "darkred")[eval_seurat[[1]]$fit.seurat$assignments],
-     axes=F, xlab="PC1 (83%)", ylab="PC2 (17%)")
-axis(1); axis(2)
-abline(v=0,h=0, lty=2, lwd=.5)
-par(new=TRUE)
-library(circular)
-plot(as.circular(eval_seurat[[1]]$fit.seurat$cell_times_est[
-  eval_seurat[[1]]$fit.seurat$assignments=="G1"]),
-  stack=T, shrink=1, cex=.5, col="darkgoldenrod1")
-points(as.circular(eval_seurat[[1]]$fit.seurat$cell_times_est[
-  eval_seurat[[1]]$fit.seurat$assignments=="S"]),
-  stack=T, shrink=1, cex=.5, col="coral")
-points(as.circular(eval_seurat[[1]]$fit.seurat$cell_times_est[
-  eval_seurat[[1]]$fit.seurat$assignments=="G2M"]),
-  stack=T, shrink=1, cex=.5, col="darkred", bins=200)
+diff_peco %>% group_by(ind) %>% summarise(mn=mean(diff_time)/2/pi,
+                                          sd=sd(diff_time/2/pi)/sqrt(sum(phase_pred_rot>0)))
+
+diff_cyclone %>% group_by(ind) %>% summarise(mn=mean(diff_time)/2/pi,
+                                             sd=sd(diff_time/2/pi)/sqrt(sum(phase_pred_rot>0)))
+
+diff_seurat %>% group_by(ind) %>% summarise(mn=mean(diff_time)/2/pi,
+                                            sd=sd(diff_time/2/pi)/sqrt(sum(phase_pred_rot>0)))
+
+diff_oscope %>% group_by(ind) %>% summarise(mn=mean(diff_time)/2/pi,
+                                            sd=sd(diff_time/2/pi)/sqrt(sum(phase_pred_rot>0)))
+
+diff_recat %>% group_by(ind) %>% summarise(mn=mean(diff_time)/2/pi,
+                                           sd=sd(diff_time/2/pi)/sqrt(sum(phase_pred_rot>0)))
+
+diff_all <- rbind(diff_recat,
+                  diff_cyclone,
+                  diff_peco,
+                  diff_seurat,
+                  diff_oscope)
+
+pval_difftime <- do.call(rbind, lapply(inds, function(ind) {
+  data.frame(ind=ind,
+             p_cyclone=wilcox.test(diff_peco[diff_peco$ind==ind,]$diff_time/2/pi,
+                                   diff_cyclone[diff_cyclone$ind==ind,]$diff_time/2/pi)$p.value,
+             p_seurat=wilcox.test(diff_peco[diff_peco$ind==ind,]$diff_time/2/pi,
+                                  diff_seurat[diff_peco$ind==ind,]$diff_time/2/pi)$p.value,
+             p_oscope=wilcox.test(diff_peco[diff_peco$ind==ind,]$diff_time/2/pi,
+                                  diff_oscope[diff_peco$ind==ind,]$diff_time/2/pi)$p.value,
+             p_recat=wilcox.test(diff_peco[diff_peco$ind==ind,]$diff_time/2/pi,
+                                 diff_recat[diff_peco$ind==ind,]$diff_time/2/pi)$p.value,
+             ratio_cyclone=mean(diff_peco[diff_peco$ind==ind,]$diff_time)/mean(diff_cyclone[diff_cyclone$ind==ind,]$diff_time),
+             ratio_seurat=mean(diff_peco[diff_peco$ind==ind,]$diff_time)/mean(diff_seurat[diff_seurat$ind==ind,]$diff_time),
+             ratio_oscope=mean(diff_peco[diff_peco$ind==ind,]$diff_time)/mean(diff_oscope[diff_oscope$ind==ind,]$diff_time),
+             ratio_recat=mean(diff_peco[diff_peco$ind==ind,]$diff_time)/mean(diff_recat[diff_recat$ind==ind,]$diff_time))
+}))
+cbind(inds, round(pval_difftime[,-1],4))
+
+mean(pval_difftime$ratio_cyclone)
+mean(pval_difftime$ratio_seurat)
+mean(pval_difftime$ratio_oscope)
+mean(pval_difftime$ratio_recat)
+
