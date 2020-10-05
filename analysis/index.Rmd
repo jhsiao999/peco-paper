@@ -11,7 +11,7 @@ editor_options:
 
 ## Overview
 
-__peco__ is a supervised approach for predicting _continuous_ cell cycle phase using single-cell RNA-seq (scRNA-seq) data. The approach is described in [our paper](doi.org/10.1101/526848).
+__peco__ is a supervised approach for predicting _continuous_ cell cycle phase using single-cell RNA-seq (scRNA-seq) data. The approach is described in [our paper](https://doi.org/10.1101/gr.247759.118).
 
 We use this site to document and share the code used to produce our analysis. Please feel free to explore. Comments and feedbacks are welcome!
 
@@ -19,7 +19,7 @@ We use this site to document and share the code used to produce our analysis. Pl
 ## The software peco
 
 We quantified continous cell cycle phase using FUCCI fluorescence imaging and trained peco to predict this continuous cell cycle phase using scRNA-seq data collected from six human cell lines. 
-[Our paper](doi.org/10.1101/526848) showed that peco produces robust cell cycle phase predictions using strong cyclic genes - genes which expression levels oscillate along the cell cycle. 
+[Our paper](https://doi.org/10.1101/gr.247759.118) showed that peco produces robust cell cycle phase predictions using strong cyclic genes - genes which expression levels oscillate along the cell cycle.
 
 The software __peco__ will be released in [Biconductor 3.11](https://www.bioconductor.org/developers/release-schedule/). This release will use the latest [R3.6.1](https://cran.r-project.org/).
 
@@ -47,7 +47,7 @@ library(peco)
 
 ## Citation
 
-[Characterizing and inferring quantitative cell-cycle phase in single-cell RNA-seq data analysis](doi.org/10.1101/526848).
+[Characterizing and inferring quantitative cell-cycle phase in single-cell RNA-seq data analysis](https://doi.org/10.1101/gr.247759.118).
 
 
 ## Downloading the data files

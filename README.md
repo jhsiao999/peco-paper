@@ -4,7 +4,7 @@ __peco__ is a supervised approach for predicting _continuous_ cell cycle phase i
 
 We trained __peco__ using cyclic gene expression signatures learned from Fluorescence Ubiquitin Cell Cycle Indicator (FUCCI) reporters. The data was collected from  fluorescence imaging with scRNA-seq to measure cell cycle phase and gene expression levels in human induced pluripotent stem cells (iPSCs). 
 
-* Our paper: [Characterizing and inferring quantitative cell-cycle phase in single-cell RNA-seq data analysis](doi.org/10.1101/526848).
+* Our paper: [Characterizing and inferring quantitative cell-cycle phase in single-cell RNA-seq data analysis](https://doi.org/10.1101/gr.247759.118).
 
 
 ## Software
@@ -21,7 +21,7 @@ library(peco)
 
 ## Data access
 
-* GEO record [GSE121265](http://www.ncbi.nlm.nih.gov/ geo/query/acc.cgi?acc=GSE121265) 
+* GEO record [GSE121265](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE121265)
 for all raw and processed sequencing data
 
 * The processed data data sets are also available in as a gzip compressed 
@@ -51,10 +51,10 @@ for questions on the package or the methods.
 
 ## How to cite
 
-> Hsiao, C. J., Tung, P., Blischak, J. D., Burnett, J., Dey, K. K.,
-> Barr, A. K., Stephens, M., and Gilad, Y. (2018). [Characterizing and
-> inferring quantitative cell-cycle phase in single-cell RNA-seq data
-> analysis.](https://doi.org/10.1101/526848) bioRxiv doi:10.1101/526848
+> Chiaowen Joyce Hsiao, PoYuan Tung, John D. Blischak, Jonathan E. Burnett,
+> Kenneth A. Barr, Kushal K. Dey, Matthew Stephens and Yoav Gilad (2020).
+> Characterizing and inferring quantitative cell cycle phase in single-cell
+> RNA-seq data analysis. Genome Biology, 30(4): 611-621, doi:10.1101/gr.247759.11
 
 ## License
 
